@@ -7,7 +7,7 @@
             Nous croyons en la magie du partage de connaissances 
             et d'histoires à travers les livres.
             </p>
-            <button class="btn btn-primary">Découvrir</button>
+            <a href="index.php?action=allBooks"><button class="btn btn-primary">Découvrir</button></a>
         </div>
 
         <div class="intro-image">
@@ -61,7 +61,7 @@
             </article>
         </div>
 
-        <button class="btn btn-primary">Voir tous les livres</button>
+        <a href="index.php?action=allBooks"><button class="btn btn-primary">Voir tous les livres</button></a>
 </section>
 
 
@@ -87,7 +87,7 @@
         </article>
     </div>
 
-    <button class="btn btn-outline">Voir tous les livres</button>
+    <a href="index.php?action=allBooks"><button class="btn btn-outline">Voir tous les livres</button></a>
 
 </section>
 
