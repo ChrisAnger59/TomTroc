@@ -14,17 +14,17 @@
     <header>
         <nav id="nav-header">
             <div class="nav-group">
-                <a href="index.php">
+                <a href="index.php?action=home">
                     <img src="./images/logo.png" alt="Logo" class="logo-site">
                 </a>
-                <a href="index.php">Accueil</a>
-                <a href="#">Nos livres</a>
+                <a href="index.php?action=home">Accueil</a>
+                <a href="index.php?action=allBooks">Nos livres à l'échange</a>
             </div>
 
             <div class="nav-group">
-                <a href="#"><img src="./images/Icon messagerie.png" width="15px">Messagerie</a>
-                <a href="#"><img src="./images/Icon mon compte.png" width="10px">Mon compte</a>
-                <a href="#">Connexion</a>
+                <a href="index.php?action=mailBox"><img src="./images/Icon messagerie.png" width="15px">Messagerie</a>
+                <a href="index.php?action=profil"><img src="./images/Icon mon compte.png" width="10px">Mon compte</a>
+                <a href="index.php?action=login">Connexion</a>
             </div>
         </nav>
 
