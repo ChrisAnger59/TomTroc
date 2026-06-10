@@ -1,0 +1,277 @@
+/******** RESET ********/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/******** BASE ********/
+
+body {
+    background-color: #F5F3EF;
+    width: 1440px;
+    margin: auto;
+    font-family: "Inter", sans-serif;
+    color: #292929;
+}
+
+h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 36px;
+    font-weight: 400;
+}
+
+p, h3 {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+}
+
+/******** UTILITIES ********/
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gap-1 { gap: 1em; }
+.gap-2 { gap: 2em; }
+.gap-3 { gap: 3em; }
+
+/******** COMPONENTS ********/
+
+.card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.btn {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 25px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    width: max-content;
+}
+
+.btn-primary {
+    background-color: #00AC66;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #006D41;
+}
+
+.btn-outline {
+    border: 1px solid #00AC66;
+    background-color: transparent;
+    color: #00AC66;
+}
+
+.btn-outline:hover {
+    background-color: #006D41;
+    color: white;
+}
+
+/******** HEADER ********/
+
+#nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10%;
+}
+
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-group a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+
+.nav-group a:hover{
+    font-weight: 600;
+}
+
+.logo-site {
+    width: 155px;
+}
+
+/******** FOOTER ********/
+
+#nav-footer {
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 50px;
+    padding: 20px 10%;
+}
+
+#nav-footer a {
+    font-weight: 300;
+    font-size: 12px;
+}
+
+#logo-footer img {
+    width: 22px;
+}
+
+/******** INTRO ********/
+
+#section-introduction {
+    display: flex;
+    justify-content: center;
+    padding: 5em;
+}
+
+.intro-container {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.intro-text {
+    max-width: 340px;
+}
+
+.intro-image img {
+    display: block;
+}
+
+.legend {
+    text-align: end;
+    color: #A6A6A6;
+    font-size: 12px;
+    font-style: italic;
+    padding: 10px;
+}
+
+/******** LAST BOOKS ********/
+
+#section-last-add {
+    background-color: #FAF9F7;
+    align-items: center;
+    padding: 5em;
+}
+
+.books-container {
+    display: flex;
+    gap: 2em;
+}
+
+.book-card {
+    width: 200px;
+}
+
+.book-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.book-content {
+    padding: 15px;
+}
+
+.book-author {
+    font-size: 14px;
+    color: #A6A6A6;
+}
+
+.book-mention {
+    font-size: 10px;
+    color: #A6A6A6;
+    font-style: italic;
+    padding: 15px;
+}
+
+/******** PITCH ********/
+
+#section-pitch {
+    align-items: center;
+    padding: 5em;
+}
+
+.pitch-desc {
+    width: 25em;
+    text-align: center;
+    font-weight: 300;
+}
+
+.pitch-cards {
+    display: flex;
+    gap: 2em;
+}
+
+.pitch-card {
+    width: 215px;
+    height: 139px;
+    text-align: center;
+    padding: 1em;
+    display: flex;
+    align-items: center;
+}
+
+/******** BANNER ********/
+
+#banner img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    object-position: center 40%;
+}
+
+/******** VALUES ********/
+
+#section-values {
+    width: 650px;
+    margin: auto;
+    padding: 8em;
+}
+
+.values-container {
+    position: relative;
+}
+
+.values-text p {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.signature {
+    font-size: 12px;
+    font-style: italic;
+    color: #A6A6A6;
+}
+
+.corner-img {
+    position: absolute;
+    bottom: -4em;
+    right: -4em;
+}
