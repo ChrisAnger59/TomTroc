@@ -10,7 +10,7 @@
 
 body {
     background-color: #F5F3EF;
-    width: 1440px;
+    max-width: 1440px;
     margin: auto;
     font-family: "Inter", sans-serif;
     color: #292929;

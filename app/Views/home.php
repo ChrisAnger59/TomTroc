@@ -24,41 +24,19 @@
 
         <div class="books-container">
 
-            <article class="card book-card">
-                <img src="./../storage/uploads/livre1.jpg" alt="premier livre">
-                <div class="book-content">
-                    <h3>Esther</h3>
-                    <p class="book-author">Alabaster</p>
-                </div>
-                <p class="book-mention">Vendu par: CamilleClubLit</p>
-            </article>
+        <?php foreach ($books as $book) { ?>
+            <a href="index.php?action=detailsBook&id=<?= $book->getId() ?>">
+                <article class="card book-card">
+                        <img src="<?= $book->getImage() ?>" alt="">
+                        <div class="book-content">
+                            <h3><?= $book->getTitle() ?></h3>
+                            <p class="book-author"><?= $book->getAuthor() ?></p>
+                        </div>
+                        <p class="book-mention">Vendu par: <?= $book->getOwner() ?></p>
+                </article>
+            </a>
+        <?php } ?>
 
-            <article class="card book-card">
-                <img src="./../storage/uploads/livre2.jpg" alt="deuxieme livre">
-                <div class="book-content">
-                    <h3>The Kinfolk Table</h3>
-                    <p class="book-author">Nathan Williams</p>
-                </div>
-                <p class="book-mention">Vendu par: Nathalire</p>
-            </article>
-
-            <article class="card book-card">
-                <img src="./../storage/uploads/livre3.jpg" alt="troisieme livre">
-                <div class="book-content">
-                    <h3>Wabi Sabi</h3>
-                    <p class="book-author">Beth Kempton</p>
-                </div>
-                <p class="book-mention">Vendu par: Alexlecture</p>
-            </article>
-
-            <article class="card book-card">
-                <img src="./../storage/uploads/livre4.jpg" alt="quatrieme livre">
-                <div class="book-content">
-                    <h3>Milk & honey</h3>
-                    <p class="book-author">Rupi Kaur</p>
-                </div>
-                <p class="book-mention">Vendu par: Hugo1990_12</p>
-            </article>
         </div>
 
         <a href="index.php?action=allBooks"><button class="btn btn-primary">Voir tous les livres</button></a>
