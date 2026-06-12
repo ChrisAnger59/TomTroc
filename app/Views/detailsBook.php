@@ -1,3 +1,3 @@
 <section>
-    <h2>Details du livre: <?= $book->getTitle() ?></h2>
+    <h1>Details du livre: <?= $book->getTitle() ?></h1>
 </section>

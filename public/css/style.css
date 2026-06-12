@@ -16,13 +16,13 @@ body {
     color: #292929;
 }
 
-h2 {
+h1 {
     font-family: "Playfair Display", serif;
     font-size: 36px;
     font-weight: 400;
 }
 
-p, h3 {
+p, h2 {
     font-size: 16px;
     font-weight: 400;
 }
@@ -44,15 +44,17 @@ a {
     flex-direction: column;
 }
 
-.flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.gap-1 { 
+    gap: 1em; 
 }
 
-.gap-1 { gap: 1em; }
-.gap-2 { gap: 2em; }
-.gap-3 { gap: 3em; }
+.gap-2 { 
+    gap: 2em; 
+}
+
+.gap-3 { 
+    gap: 3em; 
+}
 
 /******** COMPONENTS ********/
 

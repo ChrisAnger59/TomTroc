@@ -1,3 +1,3 @@
 <section>
-    <h2>Messagerie</h2>
+    <h1>Messagerie</h1>
 </section>

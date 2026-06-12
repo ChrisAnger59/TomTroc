@@ -11,7 +11,7 @@ class MailController
 
     public function showMessages()
     {
-        $view = new View("Vos Messages");
+        $view = new View();
         $view->render("mailBox");
     }
 

@@ -1,7 +1,7 @@
 <section id="section-introduction">
     <div class="intro-container">
         <div class="intro-text flex-col gap-1">
-            <h2>Rejoignez nos lecteurs passionnés</h2>
+            <h1>Rejoignez nos lecteurs passionnés</h1>
             <p>Donnez une nouvelle vie à vos livres en les échangeant avec 
             d'autres amoureux de la lecture. 
             Nous croyons en la magie du partage de connaissances 
@@ -20,7 +20,7 @@
 
 <section id="section-last-add" class="flex-col gap-3">
 
-    <h2>Les derniers livres ajoutés</h2>
+    <h1>Les derniers livres ajoutés</h1>
 
         <div class="books-container">
 
@@ -29,7 +29,7 @@
                 <article class="card book-card">
                         <img src="<?= $book->getImage() ?>" alt="">
                         <div class="book-content">
-                            <h3><?= $book->getTitle() ?></h3>
+                            <h2><?= $book->getTitle() ?></h2>
                             <p class="book-author"><?= $book->getAuthor() ?></p>
                         </div>
                         <p class="book-mention">Vendu par: <?= $book->getOwner() ?></p>
@@ -44,7 +44,7 @@
 
 
 <section id="section-pitch" class="flex-col gap-3">
-    <h2>Comment ça marche ?</h2>
+    <h1>Comment ça marche ?</h1>
     <p class="pitch-desc">Échanger des livres avec TomTroc c’est simple et amusant ! Suivez ces étapes pour commencer :</p>
 
     <div class="pitch-cards">
@@ -75,7 +75,7 @@
 
 <section id="section-values">
     <div class="values-container flex-col gap-2">
-        <h2>Nos valeurs</h2>
+        <h1>Nos valeurs</h1>
         <article class="values-text flex-col gap-1">
             <p>Chez Tom Troc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.</p>
             <p>Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé. </p>

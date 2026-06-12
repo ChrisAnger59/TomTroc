@@ -16,7 +16,7 @@ class HomeController
         $bookManager = new BookManager();
         $books = $bookManager->findLastBooks();
 
-        $view = new View("Accueil");
+        $view = new View();
         $view->render("home", ['books' => $books]);
     }
 

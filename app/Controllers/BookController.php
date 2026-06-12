@@ -16,7 +16,7 @@ class BookController
         $bookManager = new BookManager();
         $books = $bookManager->findAllBooks();
 
-        $view = new View("Nos Livres à l'échange");
+        $view = new View();
         $view->render("allBooks", ['books' => $books]);
     }
 
@@ -29,7 +29,7 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->findById($id);
 
-        $view = new View("Détails du livre");
+        $view = new View();
         $view->render("detailsBook", ['book' => $book]);
     }
 

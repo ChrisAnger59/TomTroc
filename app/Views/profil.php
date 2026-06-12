@@ -1,3 +1,3 @@
 <section>
-    <h2>Mon Profil</h2>
+    <h1>Mon Profil</h1>
 </section>
