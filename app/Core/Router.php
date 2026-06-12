@@ -54,8 +54,7 @@ class Router
                 $userController = new UserController();
                 $userController->showSignIn();
                 break;
-
-
+               
             default:
                 throw new \Exception("La page demandée n'existe pas.");
 

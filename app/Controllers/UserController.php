@@ -11,19 +11,19 @@ class UserController
 
     public function showUser()
     {
-        $view = new View("Mon Compte");
+        $view = new View();
         $view->render("profil");
     }
 
     public function showLogin()
     {
-        $view = new View("Connexion");
+        $view = new View();
         $view->render("login");
     }
 
     public function showSignIn()
     {
-        $view = new View("Inscription");
+        $view = new View();
         $view->render("signIn");
     }
 

@@ -1,3 +1,3 @@
 <section>
-    <h2>Page d'inscription</h2>
+    <h1>Page d'inscription</h1>
 </section>
