@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Core\FakeData;
+use App\Mock\Books;
 use App\Models\Book;
 
 class BookManager
@@ -13,7 +13,7 @@ class BookManager
     {
         $books = [];
 
-        foreach (FakeData::$books as $book) {
+        foreach (Books::$books as $book) {
             $books[] = new Book($book);
         }
         return $books;
@@ -23,7 +23,7 @@ class BookManager
     {
         $bookDetails = [];
 
-        foreach (FakeData::$books as $book) {
+        foreach (Books::$books as $book) {
             if ($book['id'] === $id) {
                 return new Book($book);
             }
@@ -36,7 +36,7 @@ class BookManager
 
     public function findLastBooks(): array
     {
-        $books = FakeData::$books;
+        $books = Books::$books;
 
         usort($books, function($a, $b) {
             return $b['date_creation'] <=> $a['date_creation'];
