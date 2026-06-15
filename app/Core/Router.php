@@ -50,7 +50,7 @@ class Router
                 $userController->showLogin();
                 break;
 
-            case 'signIn':
+            case 'signin':
                 $userController = new UserController();
                 $userController->showSignIn();
                 break;

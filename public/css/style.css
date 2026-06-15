@@ -44,6 +44,11 @@ a {
     flex-direction: column;
 }
 
+.flex-center{
+    display: flex;
+    justify-content: center;
+}
+
 .gap-1 { 
     gap: 1em; 
 }
@@ -54,6 +59,10 @@ a {
 
 .gap-3 { 
     gap: 3em; 
+}
+
+.gap-5 {
+    gap: 5em;
 }
 
 /******** COMPONENTS ********/
@@ -276,4 +285,63 @@ a {
     position: absolute;
     bottom: -4em;
     right: -4em;
+}
+
+
+/******** PAGE DE LOG ********/
+
+input {
+    height: 50px;
+}
+
+.article-log-form {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    align-items: center;
+}
+
+.article-log-form form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 5px;
+    gap: 10px;
+}
+
+.article-log-form form label {
+    color: #A6A6A6;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.article-log-form form input {
+    height: 50px;
+    width: 322px;
+    border: 1px solid #F0F0F0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.article-log-form form button {
+    width: 100%;
+}
+
+.article-log-form form p {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.article-log-form form a {
+    text-decoration: underline;
+}
+
+#article-img img {
+    width: 720px;
+    height: 886px;
+}
+
+#article-img {
+    flex: 1;
 }
