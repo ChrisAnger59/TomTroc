@@ -54,6 +54,16 @@ class Router
                 $userController = new UserController();
                 $userController->showSignIn();
                 break;
+
+            case 'privacyPolicy':
+                $homeController = new HomeController;
+                $homeController->showPrivacyPolicy();
+                break;
+
+            case 'legalMentions':
+                $homeController = new HomeController;
+                $homeController->showLegalMentions();
+                break;
                
             default:
                 throw new \Exception("La page demandée n'existe pas.");

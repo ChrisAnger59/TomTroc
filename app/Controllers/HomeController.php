@@ -20,4 +20,16 @@ class HomeController
         $view->render("home", ['books' => $books]);
     }
 
+    public function showPrivacyPolicy()
+    {
+        $view = new View();
+        $view->render("privacyPolicy");
+    }
+
+    public function showLegalMentions()
+    {
+        $view = new View();
+        $view->render("legalMentions");
+    }
+
 }

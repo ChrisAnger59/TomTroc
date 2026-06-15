@@ -36,10 +36,10 @@
     
     <footer>
         <nav id="nav-footer">
-            <a href="#">Politique de confidentialité</a>
-            <a href="#">Mentions légales</a>
-            <a href="#">Tom Troc©</a>
-            <a href="#" id="logo-footer"><img src="./images/logo-alt-TomTroc.png" alt="Logo alternatif TomTroc"></a>
+            <a href="index.php?action=privacyPolicy">Politique de confidentialité</a>
+            <a href="index.php?action=legalMentions">Mentions légales</a>
+            <a href="index.php?action=home">Tom Troc©</a>
+            <a href="index.php?action=home" id="logo-footer"><img src="./images/logo-alt-TomTroc.png" alt="Logo alternatif TomTroc"></a>
         </nav>
     </footer>
 
