@@ -1,6 +1,15 @@
-<section>
-    <h1>Tous les livres</h1>
-    <div class="books-container">
+<section id="section-allBooks" class="flex-col gap-3">
+
+    <div id="section-header">
+        <h1>Nos livres à l'échange</h1>
+
+        <form>
+            <button><img src="./images/search-logo.png"></button>
+            <input type="text" id="search-input" placeholder="Rechercher un livre" name="search">
+        </form>
+    </div>
+
+    <div class="books-container gap-3">
         <?php foreach ($books as $book) { ?>
             <a href="index.php?action=detailsBook&id=<?= $book->getId() ?>">
                 <article class="card book-card">
@@ -14,4 +23,5 @@
             </a>
         <?php } ?>
     </div>
+
 </section>
