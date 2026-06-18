@@ -9,6 +9,7 @@ class Book extends AbstractModel
     private string $title = "";
     private string $author = "";
     private string $owner = "";
+    private string $pictureOwner = "";
     private string $dispo = "";
     private string $image = "";
     private string $dateCreation = ""; 
@@ -89,6 +90,16 @@ class Book extends AbstractModel
     public function getDateCreation(): string
     {
         return $this->dateCreation;
+    }
+
+    public function setPictureOwner(string $pictureOwner): void
+    {
+        $this->pictureOwner = $pictureOwner;
+    }
+
+    public function getPictureOwner(): string
+    {
+        return $this->pictureOwner;
     }
 
 }
