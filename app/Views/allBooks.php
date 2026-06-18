@@ -4,8 +4,8 @@
         <h1>Nos livres à l'échange</h1>
 
         <form>
-            <button><img src="./images/search-logo.png"></button>
-            <input type="text" id="search-input" placeholder="Rechercher un livre" name="search">
+            <button type="submit"><img src="./images/search-logo.png"></button>
+            <input type="text" id="search-input" placeholder="Rechercher un livre" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         </form>
     </div>
 
