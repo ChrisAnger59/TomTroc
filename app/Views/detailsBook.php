@@ -23,10 +23,10 @@
             <p><?= nl2br($book->getDescription()) ?></p>
         </div>
 
-        <div class="flex-col gap-1">
+        <div class="flex-col gap-1" id="owner-div">
             <h2>PROPRIETAIRE</h2>
             <div>
-                <img src=""><p><?= $book->getOwner() ?></p>
+                <img src="<?= $book->getPictureOwner() ?>"><p><?= $book->getOwner() ?></p>
             </div>
         </div>
 
