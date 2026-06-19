@@ -8,12 +8,14 @@ class Book extends AbstractModel
 {
     private string $title = "";
     private string $author = "";
-    private string $owner = "";
-    private string $pictureOwner = "";
-    private string $dispo = "";
-    private string $image = "";
-    private string $dateCreation = ""; 
+    private int $userId;
+    private int $availability;
+    private string $coverPicturePath = "";
+    private string $createdAt = ""; 
+    private ?string $updatedAt = "";
     private string $description = "";
+    private string $owner = "";
+    private string $ownerPicture= "";
 
 
     public function setTitle(string $title): void
@@ -38,25 +40,25 @@ class Book extends AbstractModel
     }
 
 
-    public function setOwner(string $owner): void
+    public function setUserId(int $userId): void
     {
-        $this->owner = $owner;
+        $this->userId = $userId;
     }
 
-    public function getOwner(): string
+    public function getUserId(): int
     {
-        return $this->owner;
+        return $this->userId;
     }
 
 
-    public function setDispo(string $dispo): void
+    public function setAvailability(int $availability): void
     {
-        $this->dispo = $dispo;
+        $this->availability = $availability;
     }
 
-    public function getDispo(): string
+    public function getAvailability(): int
     {
-        return $this->dispo;
+        return $this->availability;
     }
 
 
@@ -71,35 +73,55 @@ class Book extends AbstractModel
     }
 
 
-    public function setImage(string $image): void
+    public function setCoverPicturePath(string $coverPicturePath): void
     {
-        $this->image = $image;
+        $this->coverPicturePath = $coverPicturePath;
     }
 
-    public function getImage(): string
+    public function getCoverPicturePath(): string
     {
-        return $this->image;
+        return $this->coverPicturePath;
     }
 
 
-    public function setDateCreation(string $dateCreation): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->dateCreation = $dateCreation;
+        $this->createdAt = $createdAt;
     }
 
-    public function getDateCreation(): string
+    public function getCreatedAt(): string
     {
-        return $this->dateCreation;
+        return $this->createdAt;
     }
 
-    public function setPictureOwner(string $pictureOwner): void
+    public function setUpdatedAt(?string $updatedAt): void
     {
-        $this->pictureOwner = $pictureOwner;
+        $this->updatedAt = $updatedAt;
     }
 
-    public function getPictureOwner(): string
+    public function getUpdatedAt(): string
     {
-        return $this->pictureOwner;
+        return $this->updatedAt;
+    }
+
+    public function setOwner(string $owner): void
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner(): string
+    {
+        return $this->owner;
+    }
+
+    public function setOwnerPicture(string $ownerPicture): void
+    {
+        $this->ownerPicture = $ownerPicture;
+    }
+
+    public function getOwnerPicture(): string
+    {
+        return $this->ownerPicture;
     }
 
 }

@@ -13,12 +13,12 @@
         <?php foreach ($books as $book) { ?>
             <a href="index.php?action=detailsBook&id=<?= $book->getId() ?>">
                 <article class="card book-card">
-                        <img src="<?= $book->getImage() ?>" alt="">
+                        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="">
                         <div class="book-content">
-                            <h2><?= $book->getTitle() ?></h2>
+                            <h2><?= htmlspecialchars($book->getTitle()) ?></h2>
                             <p class="book-author"><?= $book->getAuthor() ?></p>
                         </div>
-                        <p class="book-mention">Vendu par: <?= $book->getOwner() ?></p>
+                        <p class="book-mention">Vendu par: <?= htmlspecialchars($book->getOwner()) ?></p>
                 </article>
             </a>
         <?php } ?>

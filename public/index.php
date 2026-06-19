@@ -5,7 +5,8 @@ declare(strict_types=1);
 use App\Core\Router;
 use App\Core\View;
 
-//require_once __DIR__ . '/../config/env.php';
+// Charge les variables d'environnement
+require_once __DIR__ . '/../config/env.php';
 
 // Active l'autoload de Composer
 // Charge automatiquement les classes PHP (sans faire require)
