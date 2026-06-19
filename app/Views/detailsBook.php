@@ -1,19 +1,19 @@
 <p id="nav-pre-section">
     <a href="index.php?action=allBooks">Nos livres</a> 
     > 
-    <?= $book->getTitle() ?>
+    <?= htmlspecialchars($book->getTitle()) ?>
 </p>
 
 <section id="section-details" class="flex gap-2">
 
     <div id="book-cover">
-        <img src="<?= $book->getImage() ?>">
+        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>">
     </div>
 
     <article id="book-article" class="flex-col">
         <div id="title-author" class="flex-col gap-1">
-            <h1><?= $book->getTitle() ?></h1>
-            <p>par <?= $book->getAuthor() ?></p>
+            <h1><?= htmlspecialchars($book->getTitle()) ?></h1>
+            <p>par <?= htmlspecialchars($book->getAuthor()) ?></p>
         </div>
 
         <span></span>
@@ -26,7 +26,7 @@
         <div class="flex-col gap-1" id="owner-div">
             <h2>PROPRIETAIRE</h2>
             <div>
-                <img src="<?= $book->getPictureOwner() ?>"><p><?= $book->getOwner() ?></p>
+                <img src="<?= $book->getOwnerPicture() ?>"><p><?= htmlspecialchars($book->getOwner()) ?></p>
             </div>
         </div>
 

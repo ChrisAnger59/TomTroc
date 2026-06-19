@@ -5,27 +5,60 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Mock\Books;
+use App\Mock\Users;
 use App\Models\Book;
 
-class BookManager
+class BookManager extends AbstractRepository
 {
     public function findAllBooks(): array
     {
         $books = [];
 
-        foreach (Books::$books as $book) {
-            $books[] = new Book($book);
+        //index des users
+        $usersById = [];
+        foreach (Users::$users as $user) {
+            $usersById[$user['id']] = $user;
         }
+
+        foreach (Books::$books as $bookData) {
+            $book = new Book($bookData);
+
+            //Enrichissement
+            $userId = $book->getUserId();
+
+            if (isset($usersById[$userId])) {
+                $book->setOwner($usersById[$userId]['nickname']);
+                $book->setOwnerPicture($usersById[$userId]['profil_picture_path']);
+            }
+
+            $books[] = $book;
+        }
+
         return $books;
     }
 
     public function findById(int $id): ?Book
     {
-        $bookDetails = [];
 
-        foreach (Books::$books as $book) {
-            if ($book['id'] === $id) {
-                return new Book($book);
+        //index des users
+        $usersById = [];
+        foreach (Users::$users as $user) {
+            $usersById[$user['id']] = $user;
+        }
+
+        foreach (Books::$books as $bookData) {
+            if ($bookData['id'] === $id) {
+                $book = new Book($bookData);
+                
+                //Enrichissement
+                $userId = $book->getUserId();
+
+                if (isset($usersById[$userId])) {
+                    $book->setOwner($usersById[$userId]['nickname']);
+                    $book->setOwnerPicture($usersById[$userId]['profil_picture_path']);
+                }
+
+                return $book;
             }
         }
 
@@ -36,18 +69,18 @@ class BookManager
 
     public function findLastBooks(): array
     {
-        $books = Books::$books;
+        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`
+                FROM `books`
+                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                ORDER BY `books`.`created_at` DESC
+                LIMIT 4;";
 
-        usort($books, function($a, $b) {
-            return $b['date_creation'] <=> $a['date_creation'];
-        });
-
-        $books = array_slice($books, 0, 4);
+        $result = $this->db->query($sql);
 
         $lastBooks = [];
 
-        foreach ($books as $book) {
-            $lastBooks[] = new Book($book); 
+        while ($book = $result->fetch()) {
+            $lastBooks[] = new Book($book);
         }
 
         return $lastBooks;
