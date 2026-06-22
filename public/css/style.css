@@ -109,7 +109,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 10%;
+    padding: 15px 10%;
 }
 
 .nav-group {
@@ -297,6 +297,10 @@ a {
 
 
 /******** PAGE DE LOG ********/
+#section-log {
+    background-color: #FAF9F7;
+    height: 800px;
+}
 
 input {
     height: 50px;
@@ -346,8 +350,8 @@ input {
 }
 
 #article-img img {
-    width: 720px;
-    height: 886px;
+    width: 100%;
+    height: 100%;
 }
 
 #article-img {
