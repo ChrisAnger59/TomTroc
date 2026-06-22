@@ -1,4 +1,4 @@
-<section class="flex">
+<section class="flex" id="section-log">
 
     <article class="article-log-form">
 
