@@ -15,7 +15,7 @@ class Book extends AbstractModel
     private ?string $updatedAt = "";
     private string $description = "";
     private string $owner = "";
-    private string $ownerPicture= "";
+    private string $profilePicturePath= "";
 
 
     public function setTitle(string $title): void
@@ -114,14 +114,14 @@ class Book extends AbstractModel
         return $this->owner;
     }
 
-    public function setOwnerPicture(string $ownerPicture): void
+    public function setProfilePicturePath(string $profilePicturePath): void
     {
-        $this->ownerPicture = $ownerPicture;
+        $this->profilePicturePath = $profilePicturePath;
     }
 
-    public function getOwnerPicture(): string
+    public function getProfilePicturePath(): string
     {
-        return $this->ownerPicture;
+        return $this->profilePicturePath;
     }
 
 }

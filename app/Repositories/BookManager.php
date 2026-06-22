@@ -12,54 +12,36 @@ class BookManager extends AbstractRepository
 {
     public function findAllBooks(): array
     {
-        $books = [];
+        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`
+                FROM `books`
+                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                ORDER BY `books`.`created_at` DESC";
 
-        //index des users
-        $usersById = [];
-        foreach (Users::$users as $user) {
-            $usersById[$user['id']] = $user;
+        $result = $this->db->query($sql);
+
+        $lastBooks = [];
+
+        while ($book = $result->fetch()) {
+            $lastBooks[] = new Book($book);
         }
 
-        foreach (Books::$books as $bookData) {
-            $book = new Book($bookData);
-
-            //Enrichissement
-            $userId = $book->getUserId();
-
-            if (isset($usersById[$userId])) {
-                $book->setOwner($usersById[$userId]['nickname']);
-                $book->setOwnerPicture($usersById[$userId]['profil_picture_path']);
-            }
-
-            $books[] = $book;
-        }
-
-        return $books;
+        return $lastBooks;
     }
 
     public function findById(int $id): ?Book
     {
 
-        //index des users
-        $usersById = [];
-        foreach (Users::$users as $user) {
-            $usersById[$user['id']] = $user;
-        }
+        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`, `users`.`profile_picture_path`
+                FROM `books`
+                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                WHERE `books`.`id` = :id
+                ORDER BY `books`.`created_at` DESC;";
+            
+        $result = $this->db->query($sql, ['id' => $id]);
+        $book = $result->fetch();
 
-        foreach (Books::$books as $bookData) {
-            if ($bookData['id'] === $id) {
-                $book = new Book($bookData);
-                
-                //Enrichissement
-                $userId = $book->getUserId();
-
-                if (isset($usersById[$userId])) {
-                    $book->setOwner($usersById[$userId]['nickname']);
-                    $book->setOwnerPicture($usersById[$userId]['profil_picture_path']);
-                }
-
-                return $book;
-            }
+        if ($book) {
+            return new Book($book);
         }
 
         return null;
