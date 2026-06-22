@@ -32,7 +32,7 @@
                             <h2><?= htmlspecialchars($book->getTitle()) ?></h2>
                             <p class="book-author"><?= htmlspecialchars($book->getAuthor()) ?></p>
                         </div>
-                        <p class="book-mention">Vendu par: <?= htmlspecialchars($book->getOwner()) ?></p>
+                        <p class="book-mention">Vendu par: <?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
                 </article>
             </a>
         <?php } ?>
