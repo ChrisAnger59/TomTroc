@@ -26,7 +26,7 @@
         <div class="flex-col gap-1" id="owner-div">
             <h2>PROPRIETAIRE</h2>
             <div>
-                <img src="<?= $book->getProfilePicturePath() ?>"><p><?= htmlspecialchars($book->getOwner()) ?></p>
+                <img src="<?= $book->getUser()->getProfilePicturePath() ?>"><p><?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
             </div>
         </div>
 

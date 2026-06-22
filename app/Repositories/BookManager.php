@@ -4,44 +4,78 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Mock\Books;
-use App\Mock\Users;
+//use App\Mock\Books;
+//use App\Mock\Users;
 use App\Models\Book;
+use App\Models\User;
 
 class BookManager extends AbstractRepository
 {
     public function findAllBooks(): array
     {
-        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`
+        $sql = "SELECT `books`.*, `users`.`nickname`
                 FROM `books`
                 INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
                 ORDER BY `books`.`created_at` DESC";
 
         $result = $this->db->query($sql);
 
-        $lastBooks = [];
+        $allBooks = [];
 
-        while ($book = $result->fetch()) {
-            $lastBooks[] = new Book($book);
-        }
+        while ($row = $result->fetch()) {
+            $bookData = [];
+            $userData = [];
 
-        return $lastBooks;
+            foreach ($row as $key => $value) {
+                if ($key === 'nickname') {
+                    $userData[$key] = $value;
+                } else {
+                    $bookData[$key] = $value;
+                }
+            }
+
+            $book = new Book($bookData);
+            $user = new User($userData);
+
+            $book->setUser($user);
+
+            $allBooks[] = $book; 
+
+            }
+        
+        return $allBooks;
     }
 
     public function findById(int $id): ?Book
     {
 
-        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`, `users`.`profile_picture_path`
+        $sql = "SELECT `books`.*, `users`.`nickname`, `users`.`profile_picture_path`
                 FROM `books`
                 INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
                 WHERE `books`.`id` = :id
                 ORDER BY `books`.`created_at` DESC;";
             
         $result = $this->db->query($sql, ['id' => $id]);
-        $book = $result->fetch();
+        $row = $result->fetch();
+        
+        if ($row) {
+            $bookData = [];
+            $userData = [];
 
-        if ($book) {
-            return new Book($book);
+            foreach ($row as $key => $value) {
+                if ($key === 'nickname' || $key === 'profile_picture_path') {
+                    $userData[$key] = $value;
+                } else {
+                    $bookData[$key] = $value;
+                }
+            }
+
+            $book = new Book($bookData);
+            $user = new User($userData);
+
+            $book->setUser($user);
+
+            return $book;
         }
 
         return null;
@@ -51,7 +85,7 @@ class BookManager extends AbstractRepository
 
     public function findLastBooks(): array
     {
-        $sql = "SELECT `books`.*, `users`.`nickname` AS `owner`
+        $sql = "SELECT `books`.*, `users`.`nickname`
                 FROM `books`
                 INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
                 ORDER BY `books`.`created_at` DESC
@@ -61,10 +95,27 @@ class BookManager extends AbstractRepository
 
         $lastBooks = [];
 
-        while ($book = $result->fetch()) {
-            $lastBooks[] = new Book($book);
-        }
+        while ($row = $result->fetch()) {
+            $bookData = [];
+            $userData = [];
 
+            foreach ($row as $key => $value) {
+                if ($key === 'nickname') {
+                    $userData[$key] = $value;
+                } else {
+                    $bookData[$key] = $value;
+                }
+            }
+
+            $book = new Book($bookData);
+            $user = new User($userData);
+
+            $book->setUser($user);
+
+            $lastBooks[] = $book; 
+
+            }
+        
         return $lastBooks;
     }
 
