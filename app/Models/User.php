@@ -9,7 +9,7 @@ class User extends AbstractModel
     private string $nickname = "";
     private string $email = "";
     private string $password = "";
-    private string $profilePicturePath = "";
+    private ?string $profilePicturePath = "";
     private string $createdAt = "";
     private ?string $updatedAt = "";
     private string $status = "";
@@ -45,14 +45,14 @@ class User extends AbstractModel
     }
 
 
-    public function setProfilePicturePath(string $profilPicturePath): void
+    public function setProfilePicturePath(?string $profilePicturePath): void
     {
-        $this->profilPicturePath = $profilPicturePath;
+        $this->profilePicturePath = $profilePicturePath;
     }
 
     public function getProfilePicturePath(): string
     {
-        return $this->profilPicturePath;
+        return $this->profilePicturePath;
     }
 
     public function setCreatedAt(string $createdAt): void
@@ -83,5 +83,10 @@ class User extends AbstractModel
     public function getstatus(): string
     {
         return $this->status;
+    }
+
+    public function verifyPassword(string $password): bool
+    {
+        return password_verify($password, $this->password);
     }
 }
