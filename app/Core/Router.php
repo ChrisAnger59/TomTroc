@@ -9,6 +9,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BookController;
 use App\Controllers\MailController;
 use App\Controllers\UserController;
+use App\Models\User;
 
 class Router
 {
@@ -45,14 +46,24 @@ class Router
                 $userController->showUser();
                 break;
             
-            case 'login':
+            case 'loginForm':
                 $userController = new UserController();
                 $userController->showLogin();
                 break;
 
-            case 'signin':
+            case 'connectUser':
+                $userController = new UserController();
+                $userController->connectUser();
+                break;
+
+            case 'signinForm':
                 $userController = new UserController();
                 $userController->showSignIn();
+                break;
+
+            case 'register':
+                $userController = new UserController();
+                $userController->catchNewUser();
                 break;
 
             case 'privacyPolicy':

@@ -24,7 +24,7 @@
             <div class="nav-group">
                 <a href="index.php?action=mailBox"><img src="./images/Icon messagerie.png" width="15px">Messagerie</a>
                 <a href="index.php?action=profil"><img src="./images/Icon mon compte.png" width="10px">Mon compte</a>
-                <a href="index.php?action=login">Connexion</a>
+                <a href="index.php?action=loginForm">Connexion</a>
             </div>
         </nav>
 
