@@ -20,7 +20,7 @@
 
         <div class="flex-col gap-1" id="description">
             <h2>DESCRIPTION</h2>
-            <p><?= nl2br($book->getDescription()) ?></p>
+            <p><?= $book->getDescription() ?></p>
         </div>
 
         <div class="flex-col gap-1" id="owner-div">

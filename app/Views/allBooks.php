@@ -17,7 +17,7 @@
     <div class="books-container gap-3">
         <?php foreach ($books as $book) { ?>
             <a href="index.php?action=detailsBook&id=<?= $book->getId() ?>">
-                <article class="card book-card">
+                <article class="card book-card flex-col">
                         <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="">
                         <div class="book-content">
                             <h2><?= htmlspecialchars($book->getTitle()) ?></h2>
