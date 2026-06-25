@@ -8,6 +8,7 @@ namespace App\Repositories;
 //use App\Mock\Users;
 use App\Models\Book;
 use App\Models\User;
+use PDOStatement;
 
 class BookManager extends AbstractRepository
 {
@@ -20,30 +21,7 @@ class BookManager extends AbstractRepository
 
         $result = $this->db->query($sql);
 
-        $allBooks = [];
-
-        while ($row = $result->fetch()) {
-            $bookData = [];
-            $userData = [];
-
-            foreach ($row as $key => $value) {
-                if ($key === 'nickname') {
-                    $userData[$key] = $value;
-                } else {
-                    $bookData[$key] = $value;
-                }
-            }
-
-            $book = new Book($bookData);
-            $user = new User($userData);
-
-            $book->setUser($user);
-
-            $allBooks[] = $book; 
-
-            }
-        
-        return $allBooks;
+        return $this->hydrateBooksFromResult($result);
     }
 
     public function findById(int $id): ?Book
@@ -56,29 +34,10 @@ class BookManager extends AbstractRepository
                 ORDER BY `books`.`created_at` DESC;";
             
         $result = $this->db->query($sql, ['id' => $id]);
-        $row = $result->fetch();
-        
-        if ($row) {
-            $bookData = [];
-            $userData = [];
+         
+        $books = $this->hydrateBooksFromResult($result);
 
-            foreach ($row as $key => $value) {
-                if ($key === 'nickname' || $key === 'profile_picture_path') {
-                    $userData[$key] = $value;
-                } else {
-                    $bookData[$key] = $value;
-                }
-            }
-
-            $book = new Book($bookData);
-            $user = new User($userData);
-
-            $book->setUser($user);
-
-            return $book;
-        }
-
-        return null;
+        return $books[0] ?? null;
 
     }
 
@@ -93,30 +52,7 @@ class BookManager extends AbstractRepository
 
         $result = $this->db->query($sql);
 
-        $lastBooks = [];
-
-        while ($row = $result->fetch()) {
-            $bookData = [];
-            $userData = [];
-
-            foreach ($row as $key => $value) {
-                if ($key === 'nickname') {
-                    $userData[$key] = $value;
-                } else {
-                    $bookData[$key] = $value;
-                }
-            }
-
-            $book = new Book($bookData);
-            $user = new User($userData);
-
-            $book->setUser($user);
-
-            $lastBooks[] = $book; 
-
-            }
-        
-        return $lastBooks;
+        return $this->hydrateBooksFromResult($result);
     }
 
 
@@ -130,14 +66,20 @@ class BookManager extends AbstractRepository
             "search" => '%' . $search . '%'
         ]);
 
-        $searchedBooks = [];
+        return $this->hydrateBooksFromResult($result);
+    }
+
+
+    private function hydrateBooksFromResult(PDOStatement $result): array
+    {
+        $books = [];
 
         while ($row = $result->fetch()) {
             $bookData = [];
             $userData = [];
 
             foreach ($row as $key => $value) {
-                if ($key === 'nickname') {
+                if (in_array($key, ['nickname', 'profile_picture_path'])) {
                     $userData[$key] = $value;
                 } else {
                     $bookData[$key] = $value;
@@ -149,11 +91,10 @@ class BookManager extends AbstractRepository
 
             $book->setUser($user);
 
-            $searchedBooks[] = $book; 
+            $books[] = $book;
+        }
 
-            }
-        
-        return $searchedBooks;
+        return $books;
     }
 
 
