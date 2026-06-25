@@ -11,6 +11,7 @@
 body {
     background-color: #F5F3EF;
     max-width: 1440px;
+    max-height: 1048px;
     margin: auto;
     font-family: "Inter", sans-serif;
     color: #292929;
@@ -206,6 +207,8 @@ a {
 
 .book-card {
     width: 200px;
+    height: stretch;
+    height: -webkit-fill-available;
 }
 
 .book-card img {
@@ -228,6 +231,7 @@ a {
     color: #A6A6A6;
     font-style: italic;
     padding: 15px;
+    margin-top: auto;
 }
 
 /******** PITCH ********/
@@ -414,11 +418,12 @@ input {
 
 #section-details {
     background-color: #FAF9F7;
+    height: 750px;
 }
 
 #book-cover img {
     width: 720px;
-    height: 863px;
+    height: 100%;
 }
 
 #book-article span {
