@@ -13,11 +13,18 @@ class BookController
 
     public function showAllBooks()
     {
+        $search = Utils::request('search');
         $bookManager = new BookManager();
-        $books = $bookManager->findAllBooks();
+        
+        
+        if (!empty($search)) {
+            $books = $bookManager->getSearchedBooks($search);
+        } else {
+            $books = $bookManager->findAllBooks();
+        }
 
         $view = new View();
-        $view->render("allBooks", ['books' => $books]);
+        $view->render("allBooks", ['books' => $books, 'search' => $search]);
     }
 
 

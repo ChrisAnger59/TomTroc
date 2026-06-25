@@ -120,4 +120,41 @@ class BookManager extends AbstractRepository
     }
 
 
+    public function getSearchedBooks(string $search): array
+    {
+        $sql = "SELECT *
+                FROM `books`
+                WHERE `title` LIKE :search";
+        
+        $result = $this->db->query($sql, [
+            "search" => '%' . $search . '%'
+        ]);
+
+        $searchedBooks = [];
+
+        while ($row = $result->fetch()) {
+            $bookData = [];
+            $userData = [];
+
+            foreach ($row as $key => $value) {
+                if ($key === 'nickname') {
+                    $userData[$key] = $value;
+                } else {
+                    $bookData[$key] = $value;
+                }
+            }
+
+            $book = new Book($bookData);
+            $user = new User($userData);
+
+            $book->setUser($user);
+
+            $searchedBooks[] = $book; 
+
+            }
+        
+        return $searchedBooks;
+    }
+
+
 }
