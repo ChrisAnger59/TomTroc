@@ -3,9 +3,14 @@
     <div id="section-header">
         <h1>Nos livres à l'échange</h1>
 
-        <form>
+        <form method="get" action="index.php">
+            <input type="hidden" name="action" value="allBooks">
             <button type="submit"><img src="./images/search-logo.png"></button>
-            <input type="text" id="search-input" placeholder="Rechercher un livre" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+            <input type="text" 
+            id="search-input" 
+            placeholder="Rechercher un livre" 
+            name="search"
+            value="<?= htmlspecialchars($search ?? '') ?>">
         </form>
     </div>
 
