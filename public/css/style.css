@@ -34,6 +34,22 @@ a {
     font-size: 14px;
 }
 
+input {
+    height: 50px;
+    height: 50px;
+    width: 322px;
+    border: 1px solid #F0F0F0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+input::placeholder {
+    color: #A6A6A6;
+    font-size: 14px;
+    font-weight: 400;
+}
+
 /******** UTILITIES ********/
 
 .flex {
@@ -95,13 +111,19 @@ a {
 
 .btn-outline {
     border: 1px solid #00AC66;
-    background-color: transparent;
+    background-color: #F5F3EF;
     color: #00AC66;
 }
 
 .btn-outline:hover {
     background-color: #006D41;
     color: white;
+}
+
+.mini-capital {
+    font-weight: 600;
+    font-size: 8px;
+    color: #292929;
 }
 
 /******** HEADER ********/
@@ -306,10 +328,6 @@ a {
     height: 800px;
 }
 
-input {
-    height: 50px;
-}
-
 .article-log-form {
     display: flex;
     justify-content: center;
@@ -329,15 +347,6 @@ input {
     color: #A6A6A6;
     font-size: 14px;
     font-weight: 400;
-}
-
-.article-log-form form input {
-    height: 50px;
-    width: 322px;
-    border: 1px solid #F0F0F0;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    padding: 5px;
 }
 
 .article-log-form form button {
@@ -380,7 +389,7 @@ input {
 #section-allBooks #section-header {
     display: flex;
     justify-content: space-evenly;
-    gap: 7em;
+    gap: 1em;
 }
 
 #section-allBooks #section-header input {
@@ -388,12 +397,6 @@ input {
     border: 1px solid #F0F0F0;
     border-radius: 5px;
     padding: 0.6rem 0.6rem 0.6rem 2.5rem;
-}
-
-#section-allBooks #section-header input::placeholder {
-    color: #A6A6A6;
-    font-size: 14px;
-    font-weight: 400;
 }
 
 #section-allBooks #section-header input:focus::placeholder {
@@ -407,7 +410,7 @@ input {
 #section-header form button {
     position: absolute;
     left: 8px;
-    top: 30%;
+    top: 25%;
     border: none;
     background: none;
     cursor: pointer;
@@ -436,12 +439,6 @@ input {
     padding: 5em;
     padding-bottom: 0px;
     padding-top: 0px;
-}
-
-#book-article h2 {
-    font-weight: 600;
-    font-size: 8px;
-    color: #292929;
 }
 
 #description p {
@@ -492,4 +489,70 @@ input {
 
 #owner-div p {
     padding: 1em;
+}
+
+
+/******** PAGE PROFIL ********/
+#profile-info-section {
+    padding: 2em;
+}
+
+#profile-info-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    display: flex;
+    width: 400px;
+    justify-content: center;
+    padding: 1em;
+}
+
+#profile-info {
+    justify-content: center;
+    gap: 2em;
+}
+
+#personal-info form input {
+    background-color: #EDF2F6;
+}
+
+#personal-info form label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #A6A6A6;
+}
+
+#personal-info form p {
+    margin-bottom: 1em;
+}
+
+#personal-info form {
+    gap: 15px;
+}
+
+#profile-intro {
+    flex-direction: row;
+}
+
+#profile-resume, #personal-info {
+    background-color: #FFFFFF;
+    width: 550px;
+    padding: 3em;
+    border-radius: 20px;
+    align-items: center;
+}
+
+#profile-resume {
+    justify-content: space-around;
+}
+
+#profile-resume div {
+    align-items: center;
+}
+
+#profile-picture {
+    width: 10em;
+    height: 10em;
+    object-fit: cover;
+    border-radius: 50%;
 }

@@ -63,7 +63,7 @@ class Router
 
             case 'register':
                 $userController = new UserController();
-                $userController->catchNewUser();
+                $userController->addUser();
                 break;
 
             case 'privacyPolicy':
