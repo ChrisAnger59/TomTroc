@@ -19,12 +19,12 @@
         <span></span>
 
         <div class="flex-col gap-1" id="description">
-            <h2>DESCRIPTION</h2>
+            <h2 class="mini-capital">DESCRIPTION</h2>
             <p><?= $book->getDescription() ?></p>
         </div>
 
         <div class="flex-col gap-1" id="owner-div">
-            <h2>PROPRIETAIRE</h2>
+            <h2 class="mini-capital">PROPRIETAIRE</h2>
             <div>
                 <img src="<?= $book->getUser()->getProfilePicturePath() ?>"><p><?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
             </div>

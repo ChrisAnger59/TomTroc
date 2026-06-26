@@ -75,8 +75,7 @@ class BookManager extends AbstractRepository
         $books = [];
 
         while ($row = $result->fetch()) {
-            $bookData = [];
-            $userData = [];
+            $bookData = $userData = [];
 
             foreach ($row as $key => $value) {
                 if (in_array($key, ['nickname', 'profile_picture_path'])) {

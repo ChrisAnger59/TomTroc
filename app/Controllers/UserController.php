@@ -48,7 +48,7 @@ class UserController
     }
 
 
-    public function catchNewUser()
+    public function addUser()
     {
         $email = Utils::request('email');
         $nickname = Utils::request('nickname');
