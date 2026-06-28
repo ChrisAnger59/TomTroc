@@ -323,6 +323,16 @@ input::placeholder {
 
 
 /******** PAGE DE LOG ********/
+#errorMessage {
+    padding: 1em;
+    background-color: rgb(255, 0, 0);
+    color: #FFFFFF;
+    width: fit-content;
+    position: absolute;
+    top: 15%;
+    left: 18%;
+}
+
 #section-log {
     background-color: #FAF9F7;
     height: 800px;
