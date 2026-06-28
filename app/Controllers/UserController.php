@@ -7,19 +7,42 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Services\Utils;
 use App\Repositories\UserManager;
-use PDOException;
 
 class UserController
 {
 
     public function showUser()
     {
-        $view = new View();
-        $view->render("profil");
+        if (isset($_SESSION['id'])) {
+            $idSession = $_SESSION['id'];
+            $userManager = new UserManager();
+            $user = $userManager->getUserById($idSession);
+
+            $view = new View();
+            $view->render('profil', ['user' => $user]); 
+        }
+        else {
+            $view = new View();
+            $view->render('loginForm', [
+                "titre" => "Se Connecter",
+                "action" => "connectUser",
+                "signin" => false,
+                "buttonText" => "Se Connecter",
+                "mentionLink" => "Pas de compte ?",
+                "link" => "index.php?action=signinForm",
+                "textLink" => "Inscrivez-vous",
+                "redirectFromProfil" => true,
+                "errorMessage" => "Veuillez Vous connecter pour acceder à la page 'Mon compte' :"
+                ]);
+        }
     }
 
     public function showLogin()
     {
+        $errorMessage = $_SESSION['errorMessage'] ?? null;
+
+        unset($_SESSION['errorMessage']);
+
         $view = new View();
         $view->render("loginForm", [
             "titre" => "Se Connecter",
@@ -28,22 +51,30 @@ class UserController
             "buttonText" => "Se Connecter",
             "mentionLink" => "Pas de compte ?",
             "link" => "index.php?action=signinForm",
-            "textLink" => "Inscrivez-vous"
+            "textLink" => "Inscrivez-vous",
+            "redirectFromProfil" => false,
+            "errorMessage" => $errorMessage
 
         ]);
     }
 
     public function showSignIn()
     {
+        $errorMessage = $_SESSION['errorMessage'] ?? null;
+
+        unset($_SESSION['errorMessage']);
+
         $view = new View();
         $view->render("loginForm", [
             "titre" => "Inscription",
             "action" => "register",
-            "signin" => "true",
+            "signin" => true,
             "buttonText" => "S'inscrire",
             "mentionLink" => "Déjà inscrit ?",
             "link" => "index.php?action=loginForm",
-            "textLink" => "Connectez-vous"
+            "textLink" => "Connectez-vous",
+            "redirectFromProfil" => false,
+            "errorMessage" => $errorMessage
         ]);
     }
 
@@ -55,7 +86,10 @@ class UserController
         $password = Utils::request('password');
 
         if (empty($email) || empty($nickname) || empty($password)) {
-            throw new \Exception("Tous les champs sont obligatoires");
+            $_SESSION['errorMessage'] = "Merci de renseigner tous les champs";
+
+            Utils::redirect('signinForm');
+            exit;
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -68,7 +102,7 @@ class UserController
             echo "Exception reçue: ", $e->getMessage();
         }
 
-        header("Location: index.php?action=loginForm");
+        Utils::redirect('loginForm');
         exit();
     }
 
@@ -79,21 +113,35 @@ class UserController
         $password = Utils::request('password');
 
         if (empty($email) || empty($password)) {
-            throw new \Exception("Un ou plusieurs champs ne sont pas remplis");
+            $_SESSION['errorMessage'] = "Merci de renseigner tous les champs";
+
+            Utils::redirect('loginForm');
+            exit;
         }
 
         $userManager = new UserManager();
         $user = $userManager->getUserByEmail($email);
 
         if ($user && $user->verifyPassword($password)) {
-            $view = new View();
-            $view->render("profil", ['user' => $user]);
+            $_SESSION['id'] = $user->getId();
+            Utils::redirect('home');
 
         } else {
-            throw new \Exception("L'email ou le mot de passe est incorrect");
+            $_SESSION['errorMessage'] = "Identifiant ou mot de passe incorrect";
+
+            Utils::redirect('loginForm');
+            exit;
         }
+    }
 
+    public function disconnectUser()
+    {
+        $_SESSION = [];
 
+        session_destroy();
+
+        Utils::redirect('loginForm');
+        exit;
     }
 
 }

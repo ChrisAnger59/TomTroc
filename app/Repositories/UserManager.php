@@ -38,4 +38,22 @@ class Usermanager extends AbstractRepository
 
         return null;
     }
+
+    public function getUserById(int $id): ?User
+    {
+        $sql = "SELECT * FROM `users` 
+                WHERE `id` = :id";
+        
+        $result = $this->db->query($sql, [
+            'id' => $id
+        ]);
+
+        $user = $result->fetch();
+
+        if ($user) {
+            return new User($user);
+        }
+
+        return null;
+    }
 }

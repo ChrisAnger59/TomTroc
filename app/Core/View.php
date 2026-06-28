@@ -33,6 +33,8 @@ class View
 
         $content = $this->_renderViewFromTemplate($viewPath, $params);
 
+        $currentIdUser = $_SESSION['id'] ?? null;
+
         ob_start();
         require(__DIR__.'/../Views/main.php');
         echo ob_get_clean();

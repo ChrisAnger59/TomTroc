@@ -66,6 +66,11 @@ class Router
                 $userController->addUser();
                 break;
 
+            case 'disconnect':
+                $userController = new UserController();
+                $userController->disconnectUser();
+                break;
+
             case 'privacyPolicy':
                 $homeController = new HomeController;
                 $homeController->showPrivacyPolicy();
