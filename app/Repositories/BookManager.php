@@ -70,6 +70,22 @@ class BookManager extends AbstractRepository
     }
 
 
+    public function getBooksOfUser(User $user): array
+    {
+        $sql = "SELECT *
+                FROM `books`
+                WHERE `user_id` = :idUser";
+
+        $idUser = $user->getId();
+
+        $result = $this->db->query($sql, ['idUser' => $idUser]);
+
+        $books = $this->hydrateBooksFromResult($result);
+        return $books;
+
+    }
+
+
     private function hydrateBooksFromResult(PDOStatement $result): array
     {
         $books = [];

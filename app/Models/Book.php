@@ -66,8 +66,17 @@ class Book extends AbstractModel
         $this->description = $description;
     }
 
-    public function getDescription(): string
+    public function getDescription(int $length = -1): string
     {
+        if ($length > 0) {
+            $description = mb_substr($this->description, 0, $length);
+
+            if (strlen($this->description) > $length) {
+                $description .= "...";
+            }
+
+            return $description;
+        }
         return $this->description;
     }
 

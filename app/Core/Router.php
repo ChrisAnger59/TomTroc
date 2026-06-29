@@ -70,6 +70,10 @@ class Router
                 $userController = new UserController();
                 $userController->disconnectUser();
                 break;
+            
+            case 'updatePersonalInfo':
+                $userController = new UserController();
+                $userController->updatePersonalInfo();
 
             case 'privacyPolicy':
                 $homeController = new HomeController;

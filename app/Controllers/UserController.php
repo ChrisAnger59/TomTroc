@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Services\Utils;
 use App\Repositories\UserManager;
+use App\Repositories\BookManager;
 
 class UserController
 {
@@ -15,11 +16,15 @@ class UserController
     {
         if (isset($_SESSION['id'])) {
             $idSession = $_SESSION['id'];
+
             $userManager = new UserManager();
             $user = $userManager->getUserById($idSession);
 
+            $bookManager = new BookManager();
+            $books = $bookManager->getBooksOfUser($user);
+
             $view = new View();
-            $view->render('profil', ['user' => $user]); 
+            $view->render('profil', ['user' => $user, 'books' => $books]); 
         }
         else {
             $view = new View();
@@ -142,6 +147,41 @@ class UserController
 
         Utils::redirect('loginForm');
         exit;
+    }
+
+    public function updatePersonalInfo(): void
+    {
+        if (!isset($_SESSION['id'])) {
+            $_SESSION['errorMessage'] = "Veuillez vous connecter pour modifier vos infos";
+            Utils::redirect('loginForm');
+            exit();
+        }
+
+        $email = Utils::request('email');
+        $password = Utils::request('password');
+        $nickname = Utils::request('nickname');
+
+        $idUser = $_SESSION['id'];
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($idUser);
+
+        if (!empty($email) && $email !== $user->getEmail()) {
+            $user->setEmail($email);
+        }
+
+        if (!empty($password)) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $user->setPassword($hashedPassword);
+        }
+
+        if (!empty($nickname) && $nickname !== $user->getNickname()) {
+            $user->setNickname($nickname);
+        }
+
+        $userManager->updateUser($user);
+
+        Utils::redirect('profil');
+        exit();
     }
 
 }
