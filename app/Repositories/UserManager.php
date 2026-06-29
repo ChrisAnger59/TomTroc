@@ -56,4 +56,19 @@ class Usermanager extends AbstractRepository
 
         return null;
     }
+
+
+    public function updateUser(User $user): void
+    {
+        $sql = "UPDATE `users`
+                SET `email` = :email, `nickname` = :nickname, `password` = :password
+                WHERE `id` = :id;";
+                
+        $result = $this->db->query($sql, [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'nickname' => $user->getNickname(),
+            'password' => $user->getPassword()
+        ]);
+    }
 }
