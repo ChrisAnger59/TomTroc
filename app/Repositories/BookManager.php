@@ -94,11 +94,14 @@ class BookManager extends AbstractRepository
             $bookData = $userData = [];
 
             foreach ($row as $key => $value) {
+                
                 if (in_array($key, ['nickname', 'profile_picture_path'])) {
                     $userData[$key] = $value;
-                } else {
-                    $bookData[$key] = $value;
+                    continue;
                 }
+                
+                $bookData[$key] = $value;
+                
             }
 
             $book = new Book($bookData);

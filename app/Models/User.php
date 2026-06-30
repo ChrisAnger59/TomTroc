@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use DateTime;
+
 class User extends AbstractModel
 {
     private string $nickname = "";
@@ -88,5 +90,21 @@ class User extends AbstractModel
     public function verifyPassword(string $password): bool
     {
         return password_verify($password, $this->password);
+    }
+
+    public function getMembershipTime(): string
+    {
+        $createdAt = new DateTime($this->createdAt);
+        $now = new DateTime();
+
+        $duration = $createdAt->diff($now);
+
+        if ($duration->y > 0) {
+            return "Membre depuis " . $duration->y . " ans"; 
+        } elseif ($duration->m > 0) {
+            return "Membre depuis ". $duration->m . " mois";
+        } else {
+            return "Membre depuis ". $duration->d . " jours";
+        }
     }
 }
