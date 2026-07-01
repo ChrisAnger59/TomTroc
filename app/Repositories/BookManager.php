@@ -106,7 +106,6 @@ class BookManager extends AbstractRepository
 
             $book = new Book($bookData);
             $user = new User($userData);
-
             $book->setUser($user);
 
             $books[] = $book;

@@ -184,4 +184,23 @@ class UserController
         exit();
     }
 
+    public function showPublicUser()
+    {
+        $idUser = Utils::request("id", -1);
+        $idUser = filter_var($idUser, FILTER_VALIDATE_INT);
+        
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($idUser);
+
+        $bookManager = new BookManager();
+        $books = $bookManager->getBooksOfUser($user);
+
+        $view = new View();
+        $view->render('detailUser', [
+            'user' => $user,
+            'books' => $books
+        ]);
+        
+    }
+
 }
