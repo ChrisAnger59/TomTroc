@@ -115,4 +115,20 @@ class BookManager extends AbstractRepository
     }
 
 
+    public function updateBookInfo(Book $book): void
+    {
+        $sql = "UPDATE `books`
+                SET `title` = :title, `author` = :author, `description` = :description, `availability` = :availability
+                WHERE `id` = :id";
+        
+        $result = $this->db->query($sql, [
+            'id' => $book->getId(),
+            'title' => $book->getTitle(),
+            'author' => $book->getAuthor(),
+            'description' => $book->getDescription(),
+            'availability' => $book->getAvailability()
+        ]);
+    }
+
+
 }

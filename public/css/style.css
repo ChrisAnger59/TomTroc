@@ -34,7 +34,7 @@ a {
     font-size: 14px;
 }
 
-input {
+input, #status {
     height: 50px;
     height: 50px;
     width: 322px;
@@ -384,7 +384,8 @@ input::placeholder {
 
 
 #section-allBooks {
-    margin: 3em;
+    padding: 3em;
+    background-color: #FAF9F7;
 }
 
 /******** PAGE ALLBOOKS ********/
@@ -510,6 +511,7 @@ input::placeholder {
 
 #profile-info-section {
     padding: 2em;
+    background-color: #FAF9F7;
 }
 
 #profile-info-section h2 {
@@ -732,3 +734,95 @@ input::placeholder {
     align-items: center;
     justify-content: space-around;
 }
+
+/******** PAGE EDITBOOK ********/
+
+#book-edit-form {
+    background-color: #FAF9F7;
+    padding: 2em;
+    padding-bottom: 5em;
+}
+
+#book-edit-form #header-section {
+    width: fit-content;
+    padding: 1em;
+    margin-left: 6em;
+}
+
+#book-edit-form #backlink {
+    color: #A6A6A6;
+    font-size: 14px;
+}
+
+#book-edit-form h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-width: 400;
+    color: #000000;
+}
+
+#book-edit-form article {
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    margin: auto;
+    width: 1155px;
+    justify-content: space-between;
+    padding: 3em;
+}
+
+#book-edit-form #book-img img {
+    width: 488px;
+    height: 488px;
+    object-fit: cover;
+}
+
+#book-edit-form #book-img a {
+    text-align: end;
+    text-decoration: underline;
+    font-size: 12px;
+}
+
+#book-edit-form #book-info input, #status, #description-input {
+    background-color: #EDF2F6;
+    width: 435px;
+}
+
+#book-edit-form #book-info #description-input::placeholder, #book-edit-form #book-info input::placeholder {
+    font-family: 'Inter', sans-serif;
+    color: #292929;
+    font-size: 14px;
+}
+
+#description-input {
+    border: 1px solid #F0F0F0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+#book-edit-form #book-info form {
+    gap: 10px;
+}
+
+#book-edit-form label {
+    font-size: 14px;
+    color: #A6A6A6;
+}
+
+#book-edit-form form button {
+    width: 322px;
+    margin-top: 1em;
+}
+
+/*
+
+#book-edit-form #book-info form #description-input {
+    height: 400px;
+    width: 500px;
+}
+
+#book-edit-form #book-info form #description-input::placeholder {
+    white-space: pre-line;
+}
+
+*/

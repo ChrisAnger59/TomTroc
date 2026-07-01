@@ -79,6 +79,16 @@ class Router
             case 'updatePersonalInfo':
                 $userController = new UserController();
                 $userController->updatePersonalInfo();
+                break;
+
+            case'updateBook':
+                $bookController = new BookController();
+                $bookController->editBookDetails();
+                break;
+
+            case 'updateBookInfo':
+                $bookController = new BookController();
+                $bookController->updateBookInfo();
 
             case 'privacyPolicy':
                 $homeController = new HomeController;
