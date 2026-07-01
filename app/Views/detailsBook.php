@@ -25,9 +25,11 @@
 
         <div class="flex-col gap-1" id="owner-div">
             <h2 class="mini-capital">PROPRIETAIRE</h2>
+            <a href="index.php?action=detailsUser&id=<?= $book->getUserId() ?>">
             <div>
                 <img src="<?= $book->getUser()->getProfilePicturePath() ?>"><p><?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
             </div>
+            </a>
         </div>
 
         <button class="btn btn-primary">Envoyer un message</button>

@@ -7,12 +7,12 @@
                 <img id="profile-picture" src="<?= $user->getProfilePicturePath() ?>">
                 <a href="">modifier</a>
             </div>
-            <div id="border">
+            <div class="border">
 
             </div>
             <div class="flex-col">
-                <p id="owner-name"><?= $user->getNickname() ?></p>
-                <p id="since"><?= $user->getMembershipTime() ?></p>
+                <p class="owner-name"><?= $user->getNickname() ?></p>
+                <p class="since"><?= $user->getMembershipTime() ?></p>
             </div>
             <div class="flex-col">
                 <h3 class="mini-capital">BIBLIOTHEQUE</h3>

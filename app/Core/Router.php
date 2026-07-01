@@ -56,6 +56,11 @@ class Router
                 $userController->connectUser();
                 break;
 
+            case 'detailsUser':
+                $userController = new UserController();
+                $userController->showPublicUser();
+                break;
+
             case 'signinForm':
                 $userController = new UserController();
                 $userController->showSignIn();
