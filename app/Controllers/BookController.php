@@ -97,4 +97,25 @@ class BookController
         
     }
 
+    public function deleteBook()
+    {
+        if (!isset($_GET['id'])) {
+                $_SESSION['errorMessage'] = "Veuillez vous connecter pour supprimer vos livres";
+                Utils::redirect('loginForm');
+                exit();
+        }
+
+        $idBook = Utils::request('id');
+        $idBook = filter_var($idBook, FILTER_VALIDATE_INT);
+
+        $bookManager = new BookManager();
+        $book = $bookManager->findById($idBook);
+        $bookManager->deleteBook($book);
+
+        Utils::redirect('profil');
+        exit();
+
+    }
+
+
 }

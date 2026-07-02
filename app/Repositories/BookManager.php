@@ -121,12 +121,23 @@ class BookManager extends AbstractRepository
                 SET `title` = :title, `author` = :author, `description` = :description, `availability` = :availability
                 WHERE `id` = :id";
         
-        $result = $this->db->query($sql, [
+        $this->db->query($sql, [
             'id' => $book->getId(),
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
             'description' => $book->getDescription(),
             'availability' => $book->getAvailability()
+        ]);
+    }
+
+
+    public function deleteBook(Book $book): void
+    {
+        $sql = "DELETE FROM `books`
+                WHERE `id` = :id";
+
+        $this->db->query($sql, [
+            'id' => $book->getId()
         ]);
     }
 

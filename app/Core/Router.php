@@ -89,6 +89,11 @@ class Router
             case 'updateBookInfo':
                 $bookController = new BookController();
                 $bookController->updateBookInfo();
+                break;
+
+            case 'deleteBook':
+                $bookController = new BookController();
+                $bookController->deleteBook();
 
             case 'privacyPolicy':
                 $homeController = new HomeController;
