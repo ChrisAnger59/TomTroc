@@ -8,7 +8,7 @@
     <article class="flex gap-2">
         <div id="book-img" class="flex-col gap-1">
             <label>Photo</label>
-            <img src="<?= $book->getCoverPicturePath() ?>">
+            <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>">
             <a href="">Modifier la photo</a>
         </div>
 
@@ -19,13 +19,13 @@
             <form class="flex-col" method="POST" action="index.php?action=updateBookInfo&id=<?= $book->getId() ?>">
 
                 <label>Titre</label>
-                <input type="text" name="title" placeholder="<?= $book->getTitle() ?>">
+                <input type="text" name="title" placeholder="<?= htmlspecialchars($book->getTitle()) ?>">
 
                 <label>Auteur</label>
-                <input type="text" name="author" placeholder="<?= $book->getAuthor() ?>">
+                <input type="text" name="author" placeholder="<?= htmlspecialchars($book->getAuthor()) ?>">
 
                 <label>Commentaire</label>
-                <textarea id="description-input" rows="20" name="description" placeholder="<?= $book->getDescription() ?>"></textarea>
+                <textarea id="description-input" rows="20" name="description" placeholder="<?= htmlspecialchars($book->getDescription()) ?>"></textarea>
 
                 <label>Disponibilité</label>
                 <select name="availability" id="status">
