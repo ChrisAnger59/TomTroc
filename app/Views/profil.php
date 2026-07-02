@@ -1,3 +1,7 @@
+<?php if($errorMessage): ?>
+            <p id="errorMessage"><?= $errorMessage ?></p>
+<?php endif; ?>
+
 <section id="profile-info-section" class="flex-col gap-2">
     <h2>Mon compte</h2>
     <article id="profile-info" class="flex">

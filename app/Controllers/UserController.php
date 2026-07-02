@@ -23,8 +23,11 @@ class UserController
             $bookManager = new BookManager();
             $books = $bookManager->getBooksOfUser($user);
 
+            $errorMessage = $_SESSION['errorMessage'] ?? null;
+            unset($_SESSION['errorMessage']);
+
             $view = new View();
-            $view->render('profil', ['user' => $user, 'books' => $books]); 
+            $view->render('profil', ['user' => $user, 'books' => $books, 'errorMessage' => $errorMessage]); 
         }
         else {
             $view = new View();
@@ -97,6 +100,13 @@ class UserController
             exit;
         }
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['errorMessage'] = "L'email n'est pas valide";
+
+            Utils::redirect('signinForm');
+            exit;
+        }
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $userManager = new UserManager();
@@ -160,6 +170,13 @@ class UserController
         $email = Utils::request('email');
         $password = Utils::request('password');
         $nickname = Utils::request('nickname');
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['errorMessage'] = "L'email n'est pas valide";
+
+            Utils::redirect('profil');
+            exit();
+        }
 
         $idUser = $_SESSION['id'];
         $userManager = new UserManager();
