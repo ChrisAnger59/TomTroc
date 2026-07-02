@@ -8,15 +8,15 @@
 
         <div id="profile-resume" class="flex-col">
             <div class="flex-col">
-                <img id="profile-picture" src="<?= $user->getProfilePicturePath() ?>">
+                <img id="profile-picture" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>">
                 <a href="">modifier</a>
             </div>
             <div class="border">
 
             </div>
             <div class="flex-col">
-                <p class="owner-name"><?= $user->getNickname() ?></p>
-                <p class="since"><?= $user->getMembershipTime() ?></p>
+                <p class="owner-name"><?= htmlspecialchars($user->getNickname()) ?></p>
+                <p class="since"><?= htmlspecialchars($user->getMembershipTime()) ?></p>
             </div>
             <div class="flex-col">
                 <h3 class="mini-capital">BIBLIOTHEQUE</h3>
@@ -30,13 +30,13 @@
                 <p>Vos informations personnelles</p>
 
                 <label>Adresse email</label>
-                <input type="text" name="email" placeholder="<?= $user->getEmail() ?>">
+                <input type="text" name="email" placeholder="<?= htmlspecialchars($user->getEmail()) ?>">
 
                 <label>Mot de passe</label>
                 <input type="password" name="password" placeholder="••••••••">
 
                 <label>Pseudo</label>
-                <input type="text" name="nickname" placeholder="<?= $user->getNickname() ?>">
+                <input type="text" name="nickname" placeholder="<?= htmlspecialchars($user->getNickname()) ?>">
 
                 <button class="btn btn-outline">Enregistrer</button>
             </form>
@@ -60,10 +60,10 @@
                 <?php $index = 0; ?>
                 <?php foreach ($books as $book): ?>
                     <tr class="<?= ($index % 2 === 0) ? 'paire' : 'impaire' ?>">
-                        <td class="c1"><img src="<?= $book->getCoverPicturePath() ?>"></td>
-                        <td><?= $book->getTitle() ?></td>
-                        <td><?= $book->getAuthor() ?></td>
-                        <td class="description"><?= $book->getDescription(100) ?></td>
+                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>"></td>
+                        <td><?= htmlspecialchars($book->getTitle()) ?></td>
+                        <td><?= htmlspecialchars($book->getAuthor()) ?></td>
+                        <td class="description"><?= htmlspecialchars($book->getDescription(100)) ?></td>
                         <td>
                             <?php if ($book->getAvailability() === 1): ?>
                                 <span class="stock">disponible</span>
