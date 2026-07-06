@@ -9,7 +9,10 @@
         <div id="book-img" class="flex-col gap-1">
             <label>Photo</label>
             <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>">
-            <a href="">Modifier la photo</a>
+            <form action="index.php?action=uploadBookPicture&id=<?= $book->getId() ?>" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="bookPicture">
+                    <button type="submit" class="updateLink">Modifier</button> 
+            </form>
         </div>
 
         <div id="book-info" class="flex-col gap-1">
@@ -19,13 +22,13 @@
             <form class="flex-col" method="POST" action="index.php?action=updateBookInfo&id=<?= $book->getId() ?>">
 
                 <label>Titre</label>
-                <input type="text" name="title" placeholder="<?= htmlspecialchars($book->getTitle()) ?>">
+                <input type="text" name="title" value="<?= htmlspecialchars($book->getTitle()) ?>">
 
                 <label>Auteur</label>
-                <input type="text" name="author" placeholder="<?= htmlspecialchars($book->getAuthor()) ?>">
+                <input type="text" name="author" value="<?= htmlspecialchars($book->getAuthor()) ?>">
 
                 <label>Commentaire</label>
-                <textarea id="description-input" rows="20" name="description" placeholder="<?= htmlspecialchars($book->getDescription()) ?>"></textarea>
+                <textarea id="description-input" rows="20" name="description"><?= htmlspecialchars($book->getDescription()) ?></textarea>
 
                 <label>Disponibilité</label>
                 <select name="availability" id="status">

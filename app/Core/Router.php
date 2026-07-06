@@ -45,6 +45,16 @@ class Router
                 $userController = new UserController();
                 $userController->showUser();
                 break;
+
+            case 'uploadProfilePicture':
+                $userController = new UserController();
+                $userController->uploadProfilePicture();
+                break;
+
+            case 'uploadBookPicture':
+                $bookController = new BookController();
+                $bookController->uploadBookPicture();
+                break;
             
             case 'loginForm':
                 $userController = new UserController();
@@ -94,6 +104,7 @@ class Router
             case 'deleteBook':
                 $bookController = new BookController();
                 $bookController->deleteBook();
+                break;
 
             case 'privacyPolicy':
                 $homeController = new HomeController;

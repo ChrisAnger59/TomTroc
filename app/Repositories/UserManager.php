@@ -64,11 +64,23 @@ class Usermanager extends AbstractRepository
                 SET `email` = :email, `nickname` = :nickname, `password` = :password
                 WHERE `id` = :id;";
                 
-        $result = $this->db->query($sql, [
+        $this->db->query($sql, [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
             'nickname' => $user->getNickname(),
             'password' => $user->getPassword()
+        ]);
+    }
+
+    public function updateProfilePicturePath(User $user, string $newPath)
+    {
+        $sql = "UPDATE `users`
+                SET `profile_picture_path` = :newPath
+                WHERE `id` = :id;";
+
+        $this->db->query($sql, [
+            'id' => $user->getId(),
+            'newPath' => $newPath
         ]);
     }
 }

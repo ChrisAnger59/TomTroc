@@ -9,7 +9,10 @@
         <div id="profile-resume" class="flex-col">
             <div class="flex-col">
                 <img id="profile-picture" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>">
-                <a href="">modifier</a>
+                <form action="index.php?action=uploadProfilePicture" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="photo">
+                    <button type="submit" class="updateLink">Modifier</button> 
+                </form>
             </div>
             <div class="border">
 
@@ -30,13 +33,13 @@
                 <p>Vos informations personnelles</p>
 
                 <label>Adresse email</label>
-                <input type="text" name="email" placeholder="<?= htmlspecialchars($user->getEmail()) ?>">
+                <input type="text" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
 
                 <label>Mot de passe</label>
-                <input type="password" name="password" placeholder="••••••••">
+                <input type="password" name="password" value="0000000000">
 
                 <label>Pseudo</label>
-                <input type="text" name="nickname" placeholder="<?= htmlspecialchars($user->getNickname()) ?>">
+                <input type="text" name="nickname" value="<?= htmlspecialchars($user->getNickname()) ?>">
 
                 <button class="btn btn-outline">Enregistrer</button>
             </form>

@@ -186,7 +186,7 @@ class UserController
             $user->setEmail($email);
         }
 
-        if (!empty($password)) {
+        if (!empty($password) && $password !== "0000000000") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
         }
@@ -218,6 +218,67 @@ class UserController
             'books' => $books
         ]);
         
+    }
+
+
+    /**
+     * TRAITEMENT UPLOAD IMAGE PROFIL
+     */
+
+    public function uploadProfilePicture()
+    {
+        if (isset($_FILES['photo'])) {
+
+            $tmp_name = $_FILES['photo']['tmp_name'];
+            $file_size = $_FILES['photo']['size'];
+            $max_size = 5000000;
+
+            $mime = mime_content_type($tmp_name);
+            $allowed = ['image/jpg', 'image/jpeg', 'image/png'];
+
+            if (!in_array($mime, $allowed)) {
+                $error = "Type de fichier invalide";
+            }
+
+            if ($file_size > $max_size) {
+                $error = "Fichier trop volumineux";
+            }
+
+            $file_extension = strrchr($_FILES['photo']['type'], "/");
+            $file_extension = str_replace("/", ".", $file_extension);
+
+            $file_name = uniqid() . $file_extension;
+            $folder = './../public/uploads/users/';
+            $imagePath = './../public/uploads/users/'. $file_name;
+
+
+
+            if (!isset($error)) {
+
+                $idUser = $_SESSION['id'];
+                $userManager = new UserManager();
+                $user = $userManager->getUserById($idUser);
+                $oldImg = $user->getProfilePicturePath();
+
+                if ($oldImg && file_exists($oldImg)) {
+                    unlink($oldImg);
+                }
+
+                if (move_uploaded_file($tmp_name, $folder . $file_name)) {
+                    $userManager->updateProfilePicturePath($user, $imagePath);
+
+                    Utils::redirect('profil');
+                    exit();
+
+                } else {
+                    echo "L'upload n'a pas fonctionné !";
+                }
+            } else {
+                echo $error;
+            }
+            
+        
+        }
     }
 
 }
