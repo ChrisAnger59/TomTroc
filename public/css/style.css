@@ -438,6 +438,7 @@ input::placeholder {
 #book-cover img {
     width: 720px;
     height: 100%;
+    object-fit: cover;
 }
 
 #book-article span {
@@ -547,13 +548,18 @@ input::placeholder {
     gap: 15px;
 }
 
-#personal-info input::placeholder {
-    color: black;
-    opacity: 1;
-}
-
 #profile-intro {
     flex-direction: row;
+}
+
+.updateLink {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    color: #A6A6A6;
 }
 
 #profile-resume, #personal-info {
@@ -571,11 +577,6 @@ input::placeholder {
 #profile-resume div {
     align-items: center;
     gap: 5px;
-}
-
-#profile-resume a {
-    color: #A6A6A6;
-    text-decoration: underline;
 }
 
 #profile-picture {
@@ -785,6 +786,7 @@ input::placeholder {
 #book-edit-form #book-info input, #status, #description-input {
     background-color: #EDF2F6;
     width: 435px;
+    font-family: "Inter", sans-serif;
 }
 
 #book-edit-form #book-info #description-input::placeholder, #book-edit-form #book-info input::placeholder {
@@ -813,16 +815,3 @@ input::placeholder {
     width: 322px;
     margin-top: 1em;
 }
-
-/*
-
-#book-edit-form #book-info form #description-input {
-    height: 400px;
-    width: 500px;
-}
-
-#book-edit-form #book-info form #description-input::placeholder {
-    white-space: pre-line;
-}
-
-*/

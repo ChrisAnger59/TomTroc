@@ -17,6 +17,7 @@ class BookManager extends AbstractRepository
         $sql = "SELECT `books`.*, `users`.`nickname`
                 FROM `books`
                 INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                WHERE `availability` = 1
                 ORDER BY `books`.`created_at` DESC";
 
         $result = $this->db->query($sql);
@@ -138,6 +139,18 @@ class BookManager extends AbstractRepository
 
         $this->db->query($sql, [
             'id' => $book->getId()
+        ]);
+    }
+
+    public function updateCoverPicturePath(Book $book, string $newPath)
+    {
+        $sql = "UPDATE `books`
+                SET `cover_picture_path` = :newPath
+                WHERE `id` = :id;";
+
+        $this->db->query($sql, [
+            'id' => $book->getId(),
+            'newPath' => $newPath
         ]);
     }
 
