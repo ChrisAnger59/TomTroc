@@ -8,30 +8,16 @@ use App\Core\View;
 use App\Services\Utils;
 use App\Repositories\UserManager;
 use App\Repositories\BookManager;
+use App\Services\UserValidator;
+use App\Services\Auth;
 
 class UserController
 {
 
     public function showUser()
     {
-        if (isset($_SESSION['id'])) {
-            $idSession = $_SESSION['id'];
-
-            $userManager = new UserManager();
-            $user = $userManager->getUserById($idSession);
-
-            $bookManager = new BookManager();
-            $books = $bookManager->getBooksOfUser($user);
-
-            $errorMessage = $_SESSION['errorMessage'] ?? null;
-            unset($_SESSION['errorMessage']);
-
-            $view = new View();
-            $view->render('profil', ['user' => $user, 'books' => $books, 'errorMessage' => $errorMessage]); 
-        }
-        else {
-            $view = new View();
-            $view->render('loginForm', [
+        if (!Auth::isLogged()) {
+            (new View())->render('loginForm', [
                 "titre" => "Se Connecter",
                 "action" => "connectUser",
                 "signin" => false,
@@ -40,9 +26,27 @@ class UserController
                 "link" => "index.php?action=signinForm",
                 "textLink" => "Inscrivez-vous",
                 "redirectFromProfil" => true,
-                "errorMessage" => "Veuillez Vous connecter pour acceder à la page 'Mon compte' :"
-                ]);
+                "errorMessage" => "Veuillez vous connecter"
+            ]);
+            return;
         }
+
+        $userId = Auth::getLoggedUserId();
+
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($userId);
+
+        $bookManager = new BookManager();
+        $books = $bookManager->getBooksOfUser($user);
+
+        $errorMessage = $_SESSION['errorMessage'] ?? null;
+        unset($_SESSION['errorMessage']);
+
+        (new View())->render('profil', [
+            'user' => $user,
+            'books' => $books,
+            'errorMessage' => $errorMessage
+        ]);
     }
 
     public function showLogin()
@@ -93,32 +97,20 @@ class UserController
         $nickname = Utils::request('nickname');
         $password = Utils::request('password');
 
-        if (empty($email) || empty($nickname) || empty($password)) {
-            $_SESSION['errorMessage'] = "Merci de renseigner tous les champs";
+        $validator = new UserValidator();
 
+        if (!$validator->validateRegister($email, $nickname, $password)) {
+            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
             Utils::redirect('signinForm');
-            exit;
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['errorMessage'] = "L'email n'est pas valide";
-
-            Utils::redirect('signinForm');
-            exit;
+            return;
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $userManager = new UserManager();
-
-        try {
-            $userManager->addUser($nickname, $email, $hashedPassword);
-        } catch (\Exception $e) {
-            echo "Exception reçue: ", $e->getMessage();
-        }
+        $userManager->addUser($nickname, $email, $hashedPassword);
 
         Utils::redirect('loginForm');
-        exit();
     }
 
 
@@ -127,11 +119,12 @@ class UserController
         $email = Utils::request('email');
         $password = Utils::request('password');
 
-        if (empty($email) || empty($password)) {
-            $_SESSION['errorMessage'] = "Merci de renseigner tous les champs";
+        $validator = new UserValidator();
 
+        if (!$validator->validateLogin($email, $password)) {
+            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
             Utils::redirect('loginForm');
-            exit;
+            return;
         }
 
         $userManager = new UserManager();
@@ -140,12 +133,9 @@ class UserController
         if ($user && $user->verifyPassword($password)) {
             $_SESSION['id'] = $user->getId();
             Utils::redirect('home');
-
         } else {
-            $_SESSION['errorMessage'] = "Identifiant ou mot de passe incorrect";
-
+            $_SESSION['errorMessage'] = "Identifiants incorrects";
             Utils::redirect('loginForm');
-            exit;
         }
     }
 
@@ -161,44 +151,35 @@ class UserController
 
     public function updatePersonalInfo(): void
     {
-        if (!isset($_SESSION['id'])) {
-            $_SESSION['errorMessage'] = "Veuillez vous connecter pour modifier vos infos";
-            Utils::redirect('loginForm');
-            exit();
-        }
+        Auth::requireLogin();
 
         $email = Utils::request('email');
         $password = Utils::request('password');
         $nickname = Utils::request('nickname');
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['errorMessage'] = "L'email n'est pas valide";
+        $validator = new UserValidator();
 
+        if (!$validator->validateUpdate($email, $nickname, $password)) {
+            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
             Utils::redirect('profil');
-            exit();
+            return;
         }
 
-        $idUser = $_SESSION['id'];
+        $userId = Auth::getLoggedUserId();
+
         $userManager = new UserManager();
-        $user = $userManager->getUserById($idUser);
+        $user = $userManager->getUserById($userId);
 
-        if (!empty($email) && $email !== $user->getEmail()) {
-            $user->setEmail($email);
+        if (!$user) {
+            $_SESSION['errorMessage'] = "Utilisateur introuvable";
+            Utils::redirect('profil');
+            return;
         }
 
-        if (!empty($password) && $password !== "0000000000") {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $user->setPassword($hashedPassword);
-        }
-
-        if (!empty($nickname) && $nickname !== $user->getNickname()) {
-            $user->setNickname($nickname);
-        }
-
+        $user->updateUserInfo($email, $nickname, $password);
         $userManager->updateUser($user);
 
         Utils::redirect('profil');
-        exit();
     }
 
     public function showPublicUser()
@@ -227,58 +208,46 @@ class UserController
 
     public function uploadProfilePicture()
     {
-        if (isset($_FILES['photo'])) {
+        Auth::requireLogin();
 
-            $tmp_name = $_FILES['photo']['tmp_name'];
-            $file_size = $_FILES['photo']['size'];
-            $max_size = 5000000;
+        if (!isset($_FILES['photo'])) {
+            return;
+        }
 
-            $mime = mime_content_type($tmp_name);
-            $allowed = ['image/jpg', 'image/jpeg', 'image/png'];
+        $tmp_name = $_FILES['photo']['tmp_name'];
+        $file_size = $_FILES['photo']['size'];
 
-            if (!in_array($mime, $allowed)) {
-                $error = "Type de fichier invalide";
-            }
+        $mime = mime_content_type($tmp_name);
+        $allowed = ['image/jpg', 'image/jpeg', 'image/png'];
 
-            if ($file_size > $max_size) {
-                $error = "Fichier trop volumineux";
-            }
+        if (!in_array($mime, $allowed)) {
+            echo "Type de fichier invalide";
+            return;
+        }
 
-            $file_extension = strrchr($_FILES['photo']['type'], "/");
-            $file_extension = str_replace("/", ".", $file_extension);
+        if ($file_size > 5000000) {
+            echo "Fichier trop volumineux";
+            return;
+        }
 
-            $file_name = uniqid() . $file_extension;
-            $folder = './../public/uploads/users/';
-            $imagePath = './../public/uploads/users/'. $file_name;
+        $file_extension = str_replace("/", ".", strrchr($_FILES['photo']['type'], "/"));
+        $file_name = uniqid() . $file_extension;
 
+        $folder = './../public/uploads/users/';
+        $imagePath = $folder . $file_name;
 
+        $userId = Auth::getLoggedUserId();
 
-            if (!isset($error)) {
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($userId);
 
-                $idUser = $_SESSION['id'];
-                $userManager = new UserManager();
-                $user = $userManager->getUserById($idUser);
-                $oldImg = $user->getProfilePicturePath();
+        if ($user->getProfilePicturePath() && file_exists($user->getProfilePicturePath())) {
+            unlink($user->getProfilePicturePath());
+        }
 
-                if ($oldImg && file_exists($oldImg)) {
-                    unlink($oldImg);
-                }
-
-                if (move_uploaded_file($tmp_name, $folder . $file_name)) {
-                    $userManager->updateProfilePicturePath($user, $imagePath);
-
-                    Utils::redirect('profil');
-                    exit();
-
-                } else {
-                    echo "L'upload n'a pas fonctionné !";
-                }
-            } else {
-                echo $error;
-            }
-            
-        
+        if (move_uploaded_file($tmp_name, $imagePath)) {
+            $userManager->updateProfilePicturePath($user, $imagePath);
+            Utils::redirect('profil');
         }
     }
-
 }

@@ -107,4 +107,19 @@ class User extends AbstractModel
             return "Membre depuis ". $duration->d . " jours";
         }
     }
+
+    public function updateUserInfo(?string $email, ?string $nickname, ?string $password): void
+    {
+        if (!empty($email) && $email !== $this->email) {
+            $this->email = $email;
+        }
+
+        if (!empty($nickname) && $nickname !== $this->nickname) {
+            $this->nickname = $nickname;
+        }
+
+        if (!empty($password)) {
+            $this->password = password_hash($password, PASSWORD_DEFAULT);
+        }
+    }
 }
