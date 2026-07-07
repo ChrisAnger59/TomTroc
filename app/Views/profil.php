@@ -36,7 +36,7 @@
                 <input type="text" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
 
                 <label>Mot de passe</label>
-                <input type="password" name="password" value="0000000000">
+                <input type="password" name="password" placeholder="Laisser vide pour ne pas changer">
 
                 <label>Pseudo</label>
                 <input type="text" name="nickname" value="<?= htmlspecialchars($user->getNickname()) ?>">
