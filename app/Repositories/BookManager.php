@@ -127,7 +127,7 @@ class BookManager extends AbstractRepository
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
             'description' => $book->getDescription(),
-            'availability' => $book->getAvailability()
+            'availability' => (int) $book->getAvailability()
         ]);
     }
 

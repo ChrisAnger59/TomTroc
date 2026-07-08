@@ -8,6 +8,7 @@ use App\Core\View;
 use App\Services\Utils;
 use App\Repositories\BookManager;
 use App\Services\Auth;
+use App\Services\BookValidator;
 
 class BookController
 {
@@ -73,22 +74,15 @@ class BookController
         $description = Utils::request('description');
         $availability = filter_var(Utils::request('availability'), FILTER_VALIDATE_INT);
 
-        if (!empty($title)) {
-            $book->setTitle($title);
+        $validator = new BookValidator();
+
+        if (!$validator->validateUpdate($title, $author, $description, $availability)) {
+            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
+            Utils::redirect('profil');
+            return;
         }
 
-        if (!empty($author)) {
-            $book->setAuthor($author);
-        }
-
-        if (!empty($description)) {
-            $book->setDescription($description);
-        }
-
-        if ($availability !== null) {
-            $book->setAvailability($availability);
-        }
-
+        $book->updateBookInfo($title, $author, $description, $availability);
         $bookManager->updateBookInfo($book);
 
         Utils::redirect('profil');
