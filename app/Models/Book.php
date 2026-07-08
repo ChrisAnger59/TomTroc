@@ -122,4 +122,23 @@ class Book extends AbstractModel
         return $this->user;
     }
 
+    public function updateBookInfo(?string $title, ?string $author, ?string $description, ?int $availability): void 
+    {
+        if (!empty($title) && $title !== $this->title) {
+            $this->title = $title;
+        }
+
+        if (!empty($author) && $author !== $this->author) {
+            $this->author = $author;
+        }
+
+        if (!empty($description) && $description !== $this->description) {
+            $this->description = $description;
+        }
+
+        if ($availability !== $this->availability) {
+            $this->availability = $availability;
+        }
+    }
+
 }
