@@ -41,6 +41,17 @@ class Router
                 $mailController->showMessages();
                 break;
 
+            case 'messages':
+                $mailController = new MailController();
+                $mailController->showMessages();
+                break;
+
+
+            case 'sendMessage': 
+                $mailController = new MailController();
+                $mailController->sendMessage();
+                break;
+
             case 'profil':
                 $userController = new UserController();
                 $userController->showUser();

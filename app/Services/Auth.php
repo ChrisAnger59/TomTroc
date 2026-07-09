@@ -38,7 +38,8 @@ class Auth
     public static function requireLogin(): void
     {
         if (!self::isLogged()) {
-            Utils::redirect('loginForm');
+            $errorMessage = "Vous devez vous connecter";
+            Utils::redirectToLogin($errorMessage);
             exit();
         }
     }

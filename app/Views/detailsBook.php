@@ -31,7 +31,6 @@
             </div>
             </a>
         </div>
-
-        <button class="btn btn-primary">Envoyer un message</button>
+        <a href="index.php?action=messages&user=<?= $book->getUserId() ?>"><button class="btn btn-primary">Envoyer un message</button></a>
     </article>
 </section>
