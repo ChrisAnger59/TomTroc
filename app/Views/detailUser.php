@@ -19,7 +19,7 @@
                 <p><img src="./images/book-logo.svg" alt="book-logo"><?= count($books) ?> livres</p>
             </div>
 
-            <button class="btn btn-outline">Ecrire un message</button>
+            <a href="index.php?action=messages&user=<?= $user->getId() ?>"><button class="btn btn-outline">Ecrire un message</button></a>
 
         </div>
     </article>
