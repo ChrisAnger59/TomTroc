@@ -10,6 +10,7 @@ use App\Repositories\UserManager;
 use App\Repositories\BookManager;
 use App\Services\UserValidator;
 use App\Services\Auth;
+use App\Services\ImageUploader;
 
 class UserController
 {
@@ -202,10 +203,6 @@ class UserController
     }
 
 
-    /**
-     * TRAITEMENT UPLOAD IMAGE PROFIL
-     */
-
     public function uploadProfilePicture()
     {
         Auth::requireLogin();
@@ -214,40 +211,24 @@ class UserController
             return;
         }
 
-        $tmp_name = $_FILES['photo']['tmp_name'];
-        $file_size = $_FILES['photo']['size'];
-
-        $mime = mime_content_type($tmp_name);
-        $allowed = ['image/jpg', 'image/jpeg', 'image/png'];
-
-        if (!in_array($mime, $allowed)) {
-            echo "Type de fichier invalide";
-            return;
-        }
-
-        if ($file_size > 5000000) {
-            echo "Fichier trop volumineux";
-            return;
-        }
-
-        $file_extension = str_replace("/", ".", strrchr($_FILES['photo']['type'], "/"));
-        $file_name = uniqid() . $file_extension;
-
-        $folder = './../public/uploads/users/';
-        $imagePath = $folder . $file_name;
-
         $userId = Auth::getLoggedUserId();
-
         $userManager = new UserManager();
         $user = $userManager->getUserById($userId);
 
-        if ($user->getProfilePicturePath() && file_exists($user->getProfilePicturePath())) {
-            unlink($user->getProfilePicturePath());
-        }
+        $uploader = new ImageUploader();
 
-        if (move_uploaded_file($tmp_name, $imagePath)) {
+        try {
+            $imagePath = $uploader->upload($_FILES['photo'], 'users');
+
+            if ($user->getProfilePicturePath() && file_exists($user->getProfilePicturePath())) {
+                unlink($user->getProfilePicturePath());
+            }
+
             $userManager->updateProfilePicturePath($user, $imagePath);
             Utils::redirect('profil');
+            
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

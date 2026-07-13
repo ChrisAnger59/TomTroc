@@ -22,6 +22,7 @@ class MessageManager extends AbstractRepository
 
         return $this->hydrateConversationsFromResult($result);
     }
+    
 
     public function getConversation(int $user1, int $user2): array
     {
