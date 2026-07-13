@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use DateTime;
+
 class Message extends AbstractModel
 {
     private int $senderId;
     private int $receiverId;
     private string $content = "";
-    private string $createdAt = "";
+    private ?DateTime $createdAt = null;
     private ?User $otherUser = null;
 
     
@@ -46,12 +48,15 @@ class Message extends AbstractModel
     }
 
 
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(string|DateTime $createdAt, string $format = 'Y-m-d H:i:s'): void
     {
+        if (is_string($createdAt)) {
+            $createdAt = DateTime::createFromFormat($format, $createdAt);
+        }
         $this->createdAt = $createdAt;
     }
 
-    public function getCreatedAt(): string
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
