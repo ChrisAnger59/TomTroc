@@ -34,9 +34,13 @@
                     <input type="hidden" name="receiver_id" value="<?= $otherUserId ?>">
                     <textarea name="content" required></textarea>
                     <button type="submit">Envoyer</button>
+                    <?php if ($otherUserId): ?>
+                        <a href="index.php?action=messages&user=<?= $otherUserId ?>">Refresh</a>
+                    <?php endif; ?>
                 </form>
 
         </div>
 
     </div>
+
 </section>
