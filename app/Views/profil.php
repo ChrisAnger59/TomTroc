@@ -10,8 +10,11 @@
             <div class="flex-col">
                 <img id="profile-picture" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>">
                 <form action="index.php?action=uploadProfilePicture" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="photo">
-                    <button type="submit" class="updateLink">Modifier</button> 
+    
+                    <label for="photo">Modifier</label>
+                    <input type="file" name="photo" id="photo" hidden>
+                    <input type="submit" value="✔" id="upload-validator">
+
                 </form>
             </div>
             <div class="border">
