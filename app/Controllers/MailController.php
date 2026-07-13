@@ -53,12 +53,10 @@ class MailController
 
         $success = $messageManager->sendMessage($senderId, $receiverId, $content);
 
-        // Redirection après envoi
         if ($success) {
             Utils::redirect('messages&user=' . $receiverId);
         }
 
-        // fallback en cas d'erreur
         Utils::redirect('messages');
     }
 }

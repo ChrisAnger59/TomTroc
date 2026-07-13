@@ -9,6 +9,7 @@ use App\Services\Utils;
 use App\Repositories\BookManager;
 use App\Services\Auth;
 use App\Services\BookValidator;
+use App\Services\ImageUploader;
 
 class BookController
 {
@@ -45,7 +46,7 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->findById($idBook);
 
-        // ✅ sécurité ownership
+
         if (!Auth::isOwner($book->getUserId())) {
             Utils::redirect('home');
             return;
@@ -63,7 +64,7 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->findById($idBook);
 
-        // ✅ sécurité ownership
+
         if (!Auth::isOwner($book->getUserId())) {
             Utils::redirect('home');
             return;
@@ -97,7 +98,7 @@ class BookController
         $bookManager = new BookManager();
         $book = $bookManager->findById($idBook);
 
-        // ✅ sécurité ownership
+        
         if (!Auth::isOwner($book->getUserId())) {
             Utils::redirect('home');
             return;
@@ -116,46 +117,29 @@ class BookController
             return;
         }
 
-        $tmp_name = $_FILES['bookPicture']['tmp_name'];
-        $file_size = $_FILES['bookPicture']['size'];
-
-        $mime = mime_content_type($tmp_name);
-        $allowed = ['image/jpg', 'image/jpeg', 'image/png'];
-
-        if (!in_array($mime, $allowed)) {
-            echo "Type de fichier invalide";
-            return;
-        }
-
-        if ($file_size > 5000000) {
-            echo "Fichier trop volumineux";
-            return;
-        }
-
         $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
-
         $bookManager = new BookManager();
         $book = $bookManager->findById($idBook);
-
-        // ✅ sécurité ownership
+        
         if (!Auth::isOwner($book->getUserId())) {
             Utils::redirect('home');
             return;
         }
 
-        $file_extension = str_replace("/", ".", strrchr($_FILES['bookPicture']['type'], "/"));
-        $file_name = uniqid() . $file_extension;
+        $uploader = new ImageUploader();
 
-        $folder = './../public/uploads/books/';
-        $imagePath = $folder . $file_name;
+        try {
+            $imagePath = $uploader->upload($_FILES['bookPicture'], 'books');
 
-        if ($book->getCoverPicturePath() && file_exists($book->getCoverPicturePath())) {
-            unlink($book->getCoverPicturePath());
-        }
+            if ($book->getCoverPicturePath() && file_exists($book->getCoverPicturePath())) {
+                unlink($book->getCoverPicturePath());
+            }
 
-        if (move_uploaded_file($tmp_name, $imagePath)) {
             $bookManager->updateCoverPicturePath($book, $imagePath);
             Utils::redirect('updateBook', ['id' => $idBook]);
+            
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 }
