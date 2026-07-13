@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Core\View;
+use DateTime;
+use IntlDateFormatter;
 
 class Utils
 {
@@ -38,6 +40,15 @@ class Utils
             "redirectFromProfil" => true,
             "errorMessage" => $errorMessage
             ]);
+    }
+
+
+    public static function convertDateToFrenchFormat(DateTime $date) : string
+    {
+  
+        $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::FULL);
+        $dateFormatter->setPattern('dd.MM HH:mm');
+        return $dateFormatter->format($date);
     }
 
 }

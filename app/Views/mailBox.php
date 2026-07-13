@@ -24,6 +24,7 @@
                     
                     <?php foreach ($messages as $message): ?>
                         <div class="message <?= $message->getSenderId() === $userId ? 'sent' : 'received' ?>">
+                            <p><?= App\Services\Utils::convertDateToFrenchFormat($message->getCreatedAt()) ?></p>
                             <p><?= htmlspecialchars($message->getContent()) ?></p>
                         </div>
                     <?php endforeach; ?>
