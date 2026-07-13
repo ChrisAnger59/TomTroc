@@ -10,8 +10,11 @@
             <label>Photo</label>
             <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>">
             <form action="index.php?action=uploadBookPicture&id=<?= $book->getId() ?>" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="bookPicture">
-                    <button type="submit" class="updateLink">Modifier</button> 
+                
+                <label for="bookPicture">Modifier la photo</label>
+                <input type="file" name="bookPicture" id="bookPicture" hidden>
+                <input type="submit" value="✔" id="upload-validator">
+
             </form>
         </div>
 
