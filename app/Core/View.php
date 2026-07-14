@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Repositories\MessageManager;
+
 class View
 {
 
@@ -34,6 +36,13 @@ class View
         $content = $this->_renderViewFromTemplate($viewPath, $params);
 
         $currentIdUser = $_SESSION['id'] ?? null;
+
+        $unreadCount = 0;
+
+        if ($currentIdUser) {
+            $messageManager = new MessageManager();
+            $unreadCount = $messageManager->countUnreadMessages($currentIdUser);
+        }
 
         ob_start();
         require(__DIR__.'/../Views/main.php');

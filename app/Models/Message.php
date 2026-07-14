@@ -12,6 +12,7 @@ class Message extends AbstractModel
     private int $receiverId;
     private string $content = "";
     private ?DateTime $createdAt = null;
+    private int $isRead;
     private ?User $otherUser = null;
 
     
@@ -70,5 +71,16 @@ class Message extends AbstractModel
     public function getOtherUser(): ?User
     {
         return $this->otherUser;
+    }
+    
+
+    public function setIsRead(int $isRead): void
+    {
+        $this->isRead = $isRead;
+    }
+
+    public function getIsRead(): int
+    {
+        return $this->isRead;
     }
 }
