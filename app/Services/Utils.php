@@ -43,11 +43,19 @@ class Utils
     }
 
 
-    public static function convertDateToFrenchFormat(DateTime $date) : string
+    public static function convertDateFormat(DateTime $date) : string
     {
   
         $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::FULL);
         $dateFormatter->setPattern('dd.MM HH:mm');
+        return $dateFormatter->format($date);
+    }
+
+    public static function convertDateFormatHour(DateTime $date) : string
+    {
+  
+        $dateFormatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::FULL);
+        $dateFormatter->setPattern('HH:mm');
         return $dateFormatter->format($date);
     }
 

@@ -13,7 +13,7 @@
                 
                 <label for="bookPicture">Modifier la photo</label>
                 <input type="file" name="bookPicture" id="bookPicture" hidden>
-                <input type="submit" value="✔" id="upload-validator">
+                <input type="submit" value="✔" class="upload-validator">
 
             </form>
         </div>

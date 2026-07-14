@@ -8,6 +8,7 @@ use App\Core\View;
 use App\Services\Utils;
 use App\Services\Auth;
 use App\Repositories\MessageManager;
+use App\Repositories\Usermanager;
 
 class MailController
 {
@@ -17,8 +18,14 @@ class MailController
         Auth::requireLogin();
 
         $userId = Auth::getLoggedUserId();
-        $otherUser = Utils::request('user');
-        $otherUser = filter_var($otherUser, FILTER_VALIDATE_INT);
+        $otherUserId = Utils::request('user');
+        $otherUserId = filter_var($otherUserId, FILTER_VALIDATE_INT);
+        $userManager = new UserManager();
+        $otherUser = null;
+        
+        if ($otherUserId) {
+            $otherUser = $userManager->getUserById($otherUserId);
+        }
 
         $messageManager = new MessageManager();
 
@@ -26,8 +33,10 @@ class MailController
 
         $messages = [];
 
-        if ($otherUser) {
-            $messages = $messageManager->getConversation($userId, $otherUser);
+        if ($otherUserId) {
+            $messages = $messageManager->getConversation($userId, $otherUserId);
+
+            $messageManager->markAsRead($userId, $otherUserId);
         }
 
         $view = new View();
@@ -35,7 +44,8 @@ class MailController
             'conversations' => $conversations,
             'messages' => $messages,
             'userId' => $userId,
-            'otherUserId' => $otherUser
+            'otherUserId' => $otherUserId,
+            'otherUser' => $otherUser
         ]);
 
     }
@@ -44,6 +54,11 @@ class MailController
     public function sendMessage()
     {
         Auth::requireLogin();
+
+        if (!$this->isValidMessageRequest()) {
+            Utils::redirect('messages');
+            exit;
+        }
 
         $senderId = Auth::getLoggedUserId();
         $receiverId = filter_var(Utils::request('receiver_id'), FILTER_VALIDATE_INT);
@@ -58,5 +73,10 @@ class MailController
         }
 
         Utils::redirect('messages');
+    }
+
+    private function isValidMessageRequest(): bool
+    {
+        return !empty($_POST['receiver_id']) && !empty($_POST['content']);
     }
 }

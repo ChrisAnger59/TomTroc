@@ -46,7 +46,6 @@ class Router
                 $mailController->showMessages();
                 break;
 
-
             case 'sendMessage': 
                 $mailController = new MailController();
                 $mailController->sendMessage();

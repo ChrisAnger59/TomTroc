@@ -11,7 +11,7 @@ class MessageManager extends AbstractRepository
 {
     public function getUserConversations(int $userId): array
     {
-        $sql = "SELECT `messages`.*, `users`.`id`, `users`.`nickname`
+        $sql = "SELECT `messages`.*, `users`.`id`, `users`.`nickname`, `users`.`profile_picture_path`
                 FROM `messages`
                 INNER JOIN `users`
                     ON `users`.`id` = IF(`messages`.`sender_id` = :userId, `messages`.`receiver_id`, `messages`.`sender_id`)
@@ -66,7 +66,7 @@ class MessageManager extends AbstractRepository
 
             foreach ($row as $key => $value) {
 
-                if (in_array($key, ['id', 'nickname'])) {
+                if (in_array($key, ['id', 'nickname', 'profile_picture_path'])) {
                     $userData[$key] = $value;
                     continue;
                 }
@@ -118,5 +118,35 @@ class MessageManager extends AbstractRepository
         ]);
 
         return true;
+    }
+
+
+    public function markAsRead(int $userId, int $otherUserId)
+    {
+        $sql = "UPDATE `messages` 
+                SET `is_read` = 1
+                WHERE `receiver_id` = :userId
+                AND `sender_id` = :otherUserId
+                AND `is_read` = 0;";
+                
+        return $this->db->query($sql, [
+            'userId' => $userId,
+            'otherUserId' => $otherUserId
+        ]);
+    }
+
+
+    public function countUnreadMessages(int $userId): int
+    {
+        $sql = "SELECT COUNT(*)
+                FROM `messages`
+                WHERE `receiver_id` = :userId
+                AND `is_read` = 0;";
+        
+        $result = $this->db->query($sql, [
+            'userId' => $userId
+        ]);
+
+        return (int) $result->fetchColumn();
     }
 }
