@@ -165,6 +165,14 @@ input::placeholder {
     border-radius: 7px;
 }
 
+.nav-group #mailBoxLogo {
+    width: 15px;
+}
+
+.nav-group #profilLogo {
+    width: 10px;
+}
+
 /******** FOOTER ********/
 
 #nav-footer {

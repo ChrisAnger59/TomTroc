@@ -5,7 +5,7 @@
 
         <form method="get" action="index.php">
             <input type="hidden" name="action" value="allBooks">
-            <button type="submit"><img src="./images/search-logo.png"></button>
+            <button type="submit"><img src="./images/search-logo.png" alt="search-logo"></button>
             <input type="text" 
             id="search-input" 
             placeholder="Rechercher un livre" 

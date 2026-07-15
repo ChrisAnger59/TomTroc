@@ -15,15 +15,15 @@
         <nav id="nav-header">
             <div class="nav-group">
                 <a href="index.php?action=home">
-                    <img src="./images/logo.png" alt="Logo" class="logo-site">
+                    <img src="./images/logo.png" alt="Logo-site" class="logo-site">
                 </a>
                 <a href="index.php?action=home">Accueil</a>
                 <a href="index.php?action=allBooks">Nos livres à l'échange</a>
             </div>
 
             <div class="nav-group">
-                <a href="index.php?action=mailBox"><img src="./images/Icon messagerie.png" width="15px">Messagerie<?php if(isset($currentIdUser)): ?><span><?= $unreadCount ?></span><?php endif; ?></a>
-                <a href="index.php?action=profil"><img src="./images/Icon mon compte.png" width="10px">Mon compte</a>
+                <a href="index.php?action=mailBox"><img src="./images/Icon_messagerie.png" alt="mailBox" id="mailBoxLogo">Messagerie<?php if(isset($currentIdUser)): ?><span><?= $unreadCount ?></span><?php endif; ?></a>
+                <a href="index.php?action=profil"><img src="./images/Icon_mon_compte.png" alt="profil" id="profilLogo">Mon compte</a>
                 
                 <?php if(isset($currentIdUser)): ?>
                     <a href="index.php?action=disconnect">Deconnexion</a>

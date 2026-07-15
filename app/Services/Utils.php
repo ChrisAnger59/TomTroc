@@ -20,7 +20,7 @@ class Utils
     {
         $url = "index.php?action=$action";
         foreach ($params as $paramName => $paramValue) {
-            $url .= "&$paramName=$paramValue";
+            $url .= "&$paramName=" . urlencode($paramValue);
         }
         header("Location: $url");
         exit();
@@ -28,18 +28,27 @@ class Utils
 
     public static function redirectToLogin(string $errorMessage): void
     {
-        $view = new View();
-        $view->render('loginForm', [
-            "titre" => "Se Connecter",
-            "action" => "connectUser",
-            "signin" => false,
-            "buttonText" => "Se Connecter",
-            "mentionLink" => "Pas de compte ?",
-            "link" => "index.php?action=signinForm",
-            "textLink" => "Inscrivez-vous",
-            "redirectFromProfil" => true,
-            "errorMessage" => $errorMessage
-            ]);
+        $_SESSION['errorMessage'] = $errorMessage;
+        self::redirect('loginForm');
+    }
+
+    public static function redirectToSignin(string $errorMessage): void
+    {
+        $_SESSION['errorMessage'] = $errorMessage;
+        self::redirect('signinForm');
+    }
+
+    public static function redirectWithMessage(string $action, string $message): void
+    {
+        $_SESSION['errorMessage'] = $message;
+        self::redirect($action);
+    }
+
+    public static function getErrorMessage(): ?string
+    {
+        $error = $_SESSION['errorMessage'] ?? null;
+        unset($_SESSION['errorMessage']);
+        return $error;
     }
 
 

@@ -1,7 +1,11 @@
+<?php 
+    $error = App\Services\Utils::getErrorMessage();
+?>
 
-<?php if($errorMessage): ?>
-            <p id="errorMessage"><?= $errorMessage ?></p>
+<?php if($error): ?>
+            <p id="errorMessage"><?= $error ?></p>
 <?php endif; ?>
+
 <section class="flex" id="section-log">
 
     <article class="article-log-form">

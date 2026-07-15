@@ -13,44 +13,62 @@ use App\Services\ImageUploader;
 
 class BookController
 {
-    public function showAllBooks()
+    private BookManager $bookManager;
+
+    public function __construct()
     {
-        $search = Utils::request('search');
-        $bookManager = new BookManager();
-
-        $books = !empty($search)
-            ? $bookManager->getSearchedBooks($search)
-            : $bookManager->findAllBooks();
-
-        (new View())->render("allBooks", [
-            'books' => $books,
-            'search' => $search
-        ]);
+        $this->bookManager = new BookManager();
     }
 
-    public function showBookDetails()
+    public function showAllBooks(): void
+    {
+        $search = Utils::request('search');
+
+        try {
+            $books = !empty($search)
+                ? $this->bookManager->getSearchedBooks($search)
+                : $this->bookManager->findAllBooks();
+
+            (new View())->render("allBooks", [
+                'books' => $books,
+                'search' => $search
+            ]);
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("home", $e->getMessage());
+        }
+    }
+
+    public function showBookDetails(): void
     {
         $id = filter_var(Utils::request("id"), FILTER_VALIDATE_INT);
 
-        $book = (new BookManager())->findById($id);
+        if (!$id) {
+            Utils::redirectWithMessage("home", "Livre invalide");
+            return;
+        }
 
-        (new View())->render("detailsBook", ['book' => $book]);
+        try {
+            $book = $this->bookManager->findById($id);
+
+            if (!$book) {
+                Utils::redirectWithMessage("home", "Livre introuvable");
+                return;
+            }
+
+            (new View())->render("detailsBook", ['book' => $book]);
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("home", $e->getMessage());
+        }
     }
 
-    public function editBookDetails()
+    public function editBookDetails(): void
     {
         Auth::requireLogin();
 
-        $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
-
-        $bookManager = new BookManager();
-        $book = $bookManager->findById($idBook);
-
-
-        if (!Auth::isOwner($book->getUserId())) {
-            Utils::redirect('home');
-            return;
-        }
+        $book = $this->getOwnedBookFromRequest("home");
+        if (!$book) return;
 
         (new View())->render('editBookForm', ['book' => $book]);
     }
@@ -59,16 +77,8 @@ class BookController
     {
         Auth::requireLogin();
 
-        $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
-
-        $bookManager = new BookManager();
-        $book = $bookManager->findById($idBook);
-
-
-        if (!Auth::isOwner($book->getUserId())) {
-            Utils::redirect('home');
-            return;
-        }
+        $book = $this->getOwnedBookFromRequest("profil");
+        if (!$book) return;
 
         $title = Utils::request('title');
         $author = Utils::request('author');
@@ -78,68 +88,94 @@ class BookController
         $validator = new BookValidator();
 
         if (!$validator->validateUpdate($title, $author, $description, $availability)) {
-            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
-            Utils::redirect('profil');
+            Utils::redirectWithMessage("profil", implode(', ', $validator->getErrors()));
             return;
         }
 
-        $book->updateBookInfo($title, $author, $description, $availability);
-        $bookManager->updateBookInfo($book);
+        try {
+            $book->updateBookInfo($title, $author, $description, $availability);
+            $this->bookManager->updateBookInfo($book);
+            Utils::redirect("profil");
 
-        Utils::redirect('profil');
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("profil", $e->getMessage());
+        }
     }
 
-    public function deleteBook()
+    public function deleteBook(): void
     {
         Auth::requireLogin();
 
-        $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
+        $book = $this->getOwnedBookFromRequest("profil");
+        if (!$book) return;
 
-        $bookManager = new BookManager();
-        $book = $bookManager->findById($idBook);
+        try {
+            $this->bookManager->deleteBook($book);
 
-        
-        if (!Auth::isOwner($book->getUserId())) {
-            Utils::redirect('home');
-            return;
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("profil", $e->getMessage());
         }
-
-        $bookManager->deleteBook($book);
-
-        Utils::redirect('profil');
     }
 
-    public function uploadBookPicture()
+    public function uploadBookPicture(): void
     {
         Auth::requireLogin();
 
         if (!isset($_FILES['bookPicture'])) {
+            Utils::redirectWithMessage("profil", "Aucune image envoyée");
             return;
         }
 
-        $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
-        $bookManager = new BookManager();
-        $book = $bookManager->findById($idBook);
-        
-        if (!Auth::isOwner($book->getUserId())) {
-            Utils::redirect('home');
-            return;
-        }
-
-        $uploader = new ImageUploader();
+        $book = $this->getOwnedBookFromRequest("profil");
+        if (!$book) return;
 
         try {
+            $uploader = new ImageUploader();
             $imagePath = $uploader->upload($_FILES['bookPicture'], 'books');
 
-            if ($book->getCoverPicturePath() && file_exists($book->getCoverPicturePath())) {
-                unlink($book->getCoverPicturePath());
+            $oldPath = $book->getCoverPicturePath();
+
+            if ($oldPath && file_exists($oldPath) && str_contains($oldPath, 'books')) {
+                unlink($oldPath);
             }
 
-            $bookManager->updateCoverPicturePath($book, $imagePath);
-            Utils::redirect('updateBook', ['id' => $idBook]);
-            
+            $this->bookManager->updateCoverPicturePath($book, $imagePath);
+
+            Utils::redirect('updateBook', ['id' => $book->getId()]);
+
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            Utils::redirectWithMessage("profil", $e->getMessage());
+        }
+    }
+
+
+    private function getOwnedBookFromRequest(string $redirectRoute)
+    {
+        $idBook = filter_var(Utils::request('id'), FILTER_VALIDATE_INT);
+
+        if (!$idBook) {
+            Utils::redirectWithMessage($redirectRoute, "Livre invalide");
+            return null;
+        }
+
+        try {
+            $book = $this->bookManager->findById($idBook);
+
+            if (!$book) {
+                Utils::redirectWithMessage($redirectRoute, "Livre introuvable");
+                return null;
+            }
+
+            if (!Auth::isOwner($book->getUserId())) {
+                Utils::redirectWithMessage("home", "Accès refusé");
+                return null;
+            }
+
+            return $book;
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage($redirectRoute, $e->getMessage());
+            return null;
         }
     }
 }

@@ -1,3 +1,11 @@
+<?php 
+    $error = App\Services\Utils::getErrorMessage();
+?>
+
+<?php if($error): ?>
+            <p id="errorMessage"><?= $error ?></p>
+<?php endif; ?>
+
 <section id="section-introduction">
     <div class="intro-container">
         <div class="intro-text flex-col gap-1">
@@ -7,11 +15,11 @@
             Nous croyons en la magie du partage de connaissances 
             et d'histoires à travers les livres.
             </p>
-            <a href="index.php?action=allBooks"><button class="btn btn-primary">Découvrir</button></a>
+            <a href="index.php?action=allBooks" class="btn btn-primary">Découvrir</a>
         </div>
 
         <div class="intro-image">
-            <img src="./images/img-home1.png" alt="">
+            <img src="./images/img-home1.png" alt="first-home-img">
             <p class="legend">Hamza</p>
         </div>
     </div>
@@ -39,7 +47,7 @@
 
         </div>
 
-        <a href="index.php?action=allBooks"><button class="btn btn-primary">Voir tous les livres</button></a>
+        <a href="index.php?action=allBooks" class="btn btn-primary">Voir tous les livres</a>
 </section>
 
 
@@ -65,7 +73,7 @@
         </article>
     </div>
 
-    <a href="index.php?action=allBooks"><button class="btn btn-outline">Voir tous les livres</button></a>
+    <a href="index.php?action=allBooks" class="btn btn-outline">Voir tous les livres</a>
 
 </section>
 
