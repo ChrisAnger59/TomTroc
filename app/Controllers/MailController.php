@@ -12,67 +12,82 @@ use App\Repositories\Usermanager;
 
 class MailController
 {
+    private MessageManager $messageManager;
+    private UserManager $userManager;
 
-    public function showMessages()
+    public function __construct()
+    {
+        $this->messageManager = new MessageManager();
+        $this->userManager = new UserManager();
+    }
+
+    public function showMessages(): void
     {
         Auth::requireLogin();
 
         $userId = Auth::getLoggedUserId();
-        $otherUserId = Utils::request('user');
-        $otherUserId = filter_var($otherUserId, FILTER_VALIDATE_INT);
-        $userManager = new UserManager();
-        $otherUser = null;
-        
-        if ($otherUserId) {
-            $otherUser = $userManager->getUserById($otherUserId);
+        $otherUserId = filter_var(Utils::request('user'), FILTER_VALIDATE_INT);
+
+        try {
+            $otherUser = null;
+
+            if ($otherUserId) {
+                $otherUser = $this->userManager->getUserById($otherUserId);
+
+                if (!$otherUser) {
+                    Utils::redirectWithMessage("messages", "Utilisateur introuvable");
+                    return;
+                }
+            }
+
+            $conversations = $this->messageManager->getUserConversations($userId);
+
+            $messages = [];
+
+            if ($otherUserId) {
+                $messages = $this->messageManager->getConversation($userId, $otherUserId);
+                $this->messageManager->markAsRead($userId, $otherUserId);
+            }
+
+            (new View())->render('mailBox', [
+                'conversations' => $conversations,
+                'messages' => $messages,
+                'userId' => $userId,
+                'otherUserId' => $otherUserId,
+                'otherUser' => $otherUser
+            ]);
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("home", $e->getMessage());
         }
-
-        $messageManager = new MessageManager();
-
-        $conversations = $messageManager->getUserConversations($userId);
-
-        $messages = [];
-
-        if ($otherUserId) {
-            $messages = $messageManager->getConversation($userId, $otherUserId);
-
-            $messageManager->markAsRead($userId, $otherUserId);
-        }
-
-        $view = new View();
-        $view->render('mailBox', [
-            'conversations' => $conversations,
-            'messages' => $messages,
-            'userId' => $userId,
-            'otherUserId' => $otherUserId,
-            'otherUser' => $otherUser
-        ]);
-
     }
 
-
-    public function sendMessage()
+    public function sendMessage(): void
     {
         Auth::requireLogin();
 
         if (!$this->isValidMessageRequest()) {
-            Utils::redirect('messages');
-            exit;
+            Utils::redirectWithMessage("messages", "Requête invalide");
+            return;
         }
 
         $senderId = Auth::getLoggedUserId();
         $receiverId = filter_var(Utils::request('receiver_id'), FILTER_VALIDATE_INT);
         $content = Utils::request('content');
 
-        $messageManager = new MessageManager();
+        try {
+            $success = $this->messageManager->sendMessage($senderId, $receiverId, $content);
 
-        $success = $messageManager->sendMessage($senderId, $receiverId, $content);
+            if (!$success) {
+                Utils::redirectWithMessage("messages&user=" . $receiverId, "Impossible d'envoyer le message");
+                return;
+            }
 
-        if ($success) {
             Utils::redirect('messages&user=' . $receiverId);
-        }
 
-        Utils::redirect('messages');
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("messages", $e->getMessage());
+        }
     }
 
     private function isValidMessageRequest(): bool

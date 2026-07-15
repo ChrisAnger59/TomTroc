@@ -1,5 +1,9 @@
-<?php if($errorMessage): ?>
-            <p id="errorMessage"><?= $errorMessage ?></p>
+<?php 
+    $error = App\Services\Utils::getErrorMessage();
+?>
+
+<?php if($error): ?>
+            <p id="errorMessage"><?= $error ?></p>
 <?php endif; ?>
 
 <section id="profile-info-section" class="flex-col gap-2">

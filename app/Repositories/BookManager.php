@@ -14,78 +14,146 @@ class BookManager extends AbstractRepository
 {
     public function findAllBooks(): array
     {
-        $sql = "SELECT `books`.*, `users`.`nickname`
-                FROM `books`
-                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
-                WHERE `availability` = 1
-                ORDER BY `books`.`created_at` DESC";
+        try {
+            $sql = "SELECT `books`.*, `users`.`nickname`
+                    FROM `books`
+                    INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                    WHERE `availability` = 1
+                    ORDER BY `books`.`created_at` DESC";
 
-        $result = $this->db->query($sql);
+            $result = $this->db->query($sql);
 
-        return $this->hydrateBooksFromResult($result);
+            return $this->hydrateBooksFromResult($result);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de récupérer les livres");
+        }
     }
 
     public function findById(int $id): ?Book
     {
+        try {
+            $sql = "SELECT `books`.*, `users`.`nickname`, `users`.`profile_picture_path`
+                    FROM `books`
+                    INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                    WHERE `books`.`id` = :id";
 
-        $sql = "SELECT `books`.*, `users`.`nickname`, `users`.`profile_picture_path`
-                FROM `books`
-                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
-                WHERE `books`.`id` = :id
-                ORDER BY `books`.`created_at` DESC;";
-            
-        $result = $this->db->query($sql, ['id' => $id]);
-         
-        $books = $this->hydrateBooksFromResult($result);
+            $result = $this->db->query($sql, ['id' => $id]);
 
-        return $books[0] ?? null;
+            $books = $this->hydrateBooksFromResult($result);
 
+            return $books[0] ?? null; // ✅ cas normal → pas d'exception
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Erreur lors de la récupération du livre");
+        }
     }
-
 
     public function findLastBooks(): array
     {
-        $sql = "SELECT `books`.*, `users`.`nickname`
-                FROM `books`
-                INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
-                ORDER BY `books`.`created_at` DESC
-                LIMIT 4;";
+        try {
+            $sql = "SELECT `books`.*, `users`.`nickname`
+                    FROM `books`
+                    INNER JOIN `users` ON `books`.`user_id` = `users`.`id`
+                    ORDER BY `books`.`created_at` DESC
+                    LIMIT 4";
 
-        $result = $this->db->query($sql);
+            $result = $this->db->query($sql);
 
-        return $this->hydrateBooksFromResult($result);
+            return $this->hydrateBooksFromResult($result);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de récupérer les derniers livres");
+        }
     }
-
 
     public function getSearchedBooks(string $search): array
     {
-        $sql = "SELECT *
-                FROM `books`
-                WHERE `title` LIKE :search";
-        
-        $result = $this->db->query($sql, [
-            "search" => '%' . $search . '%'
-        ]);
+        try {
+            $sql = "SELECT *
+                    FROM `books`
+                    WHERE `title` LIKE :search";
 
-        return $this->hydrateBooksFromResult($result);
+            $result = $this->db->query($sql, [
+                "search" => '%' . $search . '%'
+            ]);
+
+            return $this->hydrateBooksFromResult($result);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Erreur lors de la recherche");
+        }
     }
-
 
     public function getBooksOfUser(User $user): array
     {
-        $sql = "SELECT *
-                FROM `books`
-                WHERE `user_id` = :idUser";
+        try {
+            $sql = "SELECT *
+                    FROM `books`
+                    WHERE `user_id` = :idUser";
 
-        $idUser = $user->getId();
+            $result = $this->db->query($sql, [
+                'idUser' => $user->getId()
+            ]);
 
-        $result = $this->db->query($sql, ['idUser' => $idUser]);
+            return $this->hydrateBooksFromResult($result);
 
-        $books = $this->hydrateBooksFromResult($result);
-        return $books;
-
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de récupérer les livres de l'utilisateur");
+        }
     }
 
+    public function updateBookInfo(Book $book): void
+    {
+        try {
+            $sql = "UPDATE `books`
+                    SET `title` = :title, `author` = :author, `description` = :description, `availability` = :availability
+                    WHERE `id` = :id";
+
+            $this->db->query($sql, [
+                'id' => $book->getId(),
+                'title' => $book->getTitle(),
+                'author' => $book->getAuthor(),
+                'description' => $book->getDescription(),
+                'availability' => (int) $book->getAvailability()
+            ]);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de modifier le livre");
+        }
+    }
+
+    public function deleteBook(Book $book): void
+    {
+        try {
+            $sql = "DELETE FROM `books`
+                    WHERE `id` = :id";
+
+            $this->db->query($sql, [
+                'id' => $book->getId()
+            ]);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de supprimer le livre");
+        }
+    }
+
+    public function updateCoverPicturePath(Book $book, string $newPath): void
+    {
+        try {
+            $sql = "UPDATE `books`
+                    SET `cover_picture_path` = :newPath
+                    WHERE `id` = :id";
+
+            $this->db->query($sql, [
+                'id' => $book->getId(),
+                'newPath' => $newPath
+            ]);
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Erreur lors de la mise à jour de l'image");
+        }
+    }
 
     private function hydrateBooksFromResult(PDOStatement $result): array
     {
@@ -114,45 +182,4 @@ class BookManager extends AbstractRepository
 
         return $books;
     }
-
-
-    public function updateBookInfo(Book $book): void
-    {
-        $sql = "UPDATE `books`
-                SET `title` = :title, `author` = :author, `description` = :description, `availability` = :availability
-                WHERE `id` = :id";
-        
-        $this->db->query($sql, [
-            'id' => $book->getId(),
-            'title' => $book->getTitle(),
-            'author' => $book->getAuthor(),
-            'description' => $book->getDescription(),
-            'availability' => (int) $book->getAvailability()
-        ]);
-    }
-
-
-    public function deleteBook(Book $book): void
-    {
-        $sql = "DELETE FROM `books`
-                WHERE `id` = :id";
-
-        $this->db->query($sql, [
-            'id' => $book->getId()
-        ]);
-    }
-
-    public function updateCoverPicturePath(Book $book, string $newPath)
-    {
-        $sql = "UPDATE `books`
-                SET `cover_picture_path` = :newPath
-                WHERE `id` = :id;";
-
-        $this->db->query($sql, [
-            'id' => $book->getId(),
-            'newPath' => $newPath
-        ]);
-    }
-
-
 }

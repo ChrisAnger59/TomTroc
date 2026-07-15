@@ -14,50 +14,18 @@ use App\Services\ImageUploader;
 
 class UserController
 {
+    private UserManager $userManager;
+    private BookManager $bookManager;
 
-    public function showUser()
+    public function __construct()
     {
-        if (!Auth::isLogged()) {
-            (new View())->render('loginForm', [
-                "titre" => "Se Connecter",
-                "action" => "connectUser",
-                "signin" => false,
-                "buttonText" => "Se Connecter",
-                "mentionLink" => "Pas de compte ?",
-                "link" => "index.php?action=signinForm",
-                "textLink" => "Inscrivez-vous",
-                "redirectFromProfil" => true,
-                "errorMessage" => "Veuillez vous connecter"
-            ]);
-            return;
-        }
-
-        $userId = Auth::getLoggedUserId();
-
-        $userManager = new UserManager();
-        $user = $userManager->getUserById($userId);
-
-        $bookManager = new BookManager();
-        $books = $bookManager->getBooksOfUser($user);
-
-        $errorMessage = $_SESSION['errorMessage'] ?? null;
-        unset($_SESSION['errorMessage']);
-
-        (new View())->render('profil', [
-            'user' => $user,
-            'books' => $books,
-            'errorMessage' => $errorMessage
-        ]);
+        $this->userManager = new UserManager();
+        $this->bookManager = new BookManager();
     }
 
-    public function showLogin()
+    public function showLogin(): void
     {
-        $errorMessage = $_SESSION['errorMessage'] ?? null;
-
-        unset($_SESSION['errorMessage']);
-
-        $view = new View();
-        $view->render("loginForm", [
+        (new View())->render("loginForm", [
             "titre" => "Se Connecter",
             "action" => "connectUser",
             "signin" => false,
@@ -65,20 +33,13 @@ class UserController
             "mentionLink" => "Pas de compte ?",
             "link" => "index.php?action=signinForm",
             "textLink" => "Inscrivez-vous",
-            "redirectFromProfil" => false,
-            "errorMessage" => $errorMessage
-
+            "redirectFromProfil" => false
         ]);
     }
 
-    public function showSignIn()
+    public function showSignIn(): void
     {
-        $errorMessage = $_SESSION['errorMessage'] ?? null;
-
-        unset($_SESSION['errorMessage']);
-
-        $view = new View();
-        $view->render("loginForm", [
+        (new View())->render("loginForm", [
             "titre" => "Inscription",
             "action" => "register",
             "signin" => true,
@@ -86,13 +47,35 @@ class UserController
             "mentionLink" => "Déjà inscrit ?",
             "link" => "index.php?action=loginForm",
             "textLink" => "Connectez-vous",
-            "redirectFromProfil" => false,
-            "errorMessage" => $errorMessage
+            "redirectFromProfil" => false
         ]);
     }
 
+    public function showUser(): void
+    {
+        Auth::requireLogin();
 
-    public function addUser()
+        try {
+            $user = $this->userManager->getUserById(Auth::getLoggedUserId());
+
+            if (!$user) {
+                Utils::redirectWithMessage("home", "Utilisateur introuvable");
+                return;
+            }
+
+            $books = $this->bookManager->getBooksOfUser($user);
+
+            (new View())->render('profil', [
+                'user' => $user,
+                'books' => $books
+            ]);
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("home", $e->getMessage());
+        }
+    }
+
+    public function addUser(): void
     {
         $email = Utils::request('email');
         $nickname = Utils::request('nickname');
@@ -101,21 +84,22 @@ class UserController
         $validator = new UserValidator();
 
         if (!$validator->validateRegister($email, $nickname, $password)) {
-            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
-            Utils::redirect('signinForm');
+            Utils::redirectToSignin(implode(', ', $validator->getErrors()));
             return;
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $this->userManager->addUser($nickname, $email, $hashedPassword);
 
-        $userManager = new UserManager();
-        $userManager->addUser($nickname, $email, $hashedPassword);
+            Utils::redirect('loginForm');
 
-        Utils::redirect('loginForm');
+        } catch (\Exception $e) {
+            Utils::redirectToSignin($e->getMessage());
+        }
     }
 
-
-    public function connectUser()
+    public function connectUser(): void
     {
         $email = Utils::request('email');
         $password = Utils::request('password');
@@ -123,31 +107,24 @@ class UserController
         $validator = new UserValidator();
 
         if (!$validator->validateLogin($email, $password)) {
-            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
-            Utils::redirect('loginForm');
+            Utils::redirectToLogin(implode(', ', $validator->getErrors()));
             return;
         }
 
-        $userManager = new UserManager();
-        $user = $userManager->getUserByEmail($email);
+        try {
+            $user = $this->userManager->getUserByEmail($email);
 
-        if ($user && $user->verifyPassword($password)) {
-            $_SESSION['id'] = $user->getId();
-            Utils::redirect('home');
-        } else {
-            $_SESSION['errorMessage'] = "Identifiants incorrects";
-            Utils::redirect('loginForm');
+            if ($user && $user->verifyPassword($password)) {
+                $_SESSION['id'] = $user->getId();
+                Utils::redirect('home');
+                return;
+            }
+
+            Utils::redirectToLogin("Identifiants incorrects");
+
+        } catch (\Exception $e) {
+            Utils::redirectToLogin($e->getMessage());
         }
-    }
-
-    public function disconnectUser()
-    {
-        $_SESSION = [];
-
-        session_destroy();
-
-        Utils::redirect('loginForm');
-        exit;
     }
 
     public function updatePersonalInfo(): void
@@ -161,74 +138,98 @@ class UserController
         $validator = new UserValidator();
 
         if (!$validator->validateUpdate($email, $nickname, $password)) {
-            $_SESSION['errorMessage'] = implode(', ', $validator->getErrors());
-            Utils::redirect('profil');
+            Utils::redirectWithMessage("profil", implode(', ', $validator->getErrors()));
             return;
         }
 
-        $userId = Auth::getLoggedUserId();
+        try {
+            $user = $this->userManager->getUserById(Auth::getLoggedUserId());
 
-        $userManager = new UserManager();
-        $user = $userManager->getUserById($userId);
+            if (!$user) {
+                Utils::redirectWithMessage("profil", "Utilisateur introuvable");
+                return;
+            }
 
-        if (!$user) {
-            $_SESSION['errorMessage'] = "Utilisateur introuvable";
+            $user->updateUserInfo($email, $nickname, $password);
+            $this->userManager->updateUser($user);
+
             Utils::redirect('profil');
-            return;
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("profil", $e->getMessage());
         }
-
-        $user->updateUserInfo($email, $nickname, $password);
-        $userManager->updateUser($user);
-
-        Utils::redirect('profil');
     }
 
-    public function showPublicUser()
+    public function showPublicUser(): void
     {
-        $idUser = Utils::request("id", -1);
-        $idUser = filter_var($idUser, FILTER_VALIDATE_INT);
-        
-        $userManager = new UserManager();
-        $user = $userManager->getUserById($idUser);
+        $idUser = filter_var(Utils::request("id"), FILTER_VALIDATE_INT);
 
-        $bookManager = new BookManager();
-        $books = $bookManager->getBooksOfUser($user);
+        if (!$idUser) {
+            Utils::redirectWithMessage("home", "Utilisateur invalide");
+            return;
+        }
 
-        $view = new View();
-        $view->render('detailUser', [
-            'user' => $user,
-            'books' => $books
-        ]);
-        
+        try {
+            $user = $this->userManager->getUserById($idUser);
+
+            if (!$user) {
+                Utils::redirectWithMessage("home", "Utilisateur introuvable");
+                return;
+            }
+
+            $books = $this->bookManager->getBooksOfUser($user);
+
+            (new View())->render('detailUser', [
+                'user' => $user,
+                'books' => $books
+            ]);
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("home", $e->getMessage());
+        }
     }
 
-
-    public function uploadProfilePicture()
+    public function uploadProfilePicture(): void
     {
         Auth::requireLogin();
 
         if (!isset($_FILES['photo'])) {
+            Utils::redirectWithMessage("profil", "Aucune image envoyée");
             return;
         }
 
-        $userId = Auth::getLoggedUserId();
-        $userManager = new UserManager();
-        $user = $userManager->getUserById($userId);
-
-        $uploader = new ImageUploader();
-
         try {
-            $imagePath = $uploader->upload($_FILES['photo'], 'users');
+            $user = $this->userManager->getUserById(Auth::getLoggedUserId());
 
-            if ($user->getProfilePicturePath() && file_exists($user->getProfilePicturePath())) {
-                unlink($user->getProfilePicturePath());
+            if (!$user) {
+                Utils::redirectWithMessage("profil", "Utilisateur introuvable");
+                return;
             }
 
-            $userManager->updateProfilePicturePath($user, $imagePath);
+            $uploader = new ImageUploader();
+            $imagePath = $uploader->upload($_FILES['photo'], 'users');
+
+            $oldPath = $user->getProfilePicturePath();
+
+            if ($oldPath && file_exists($oldPath) && str_contains($oldPath, 'users')) {
+                unlink($oldPath);
+            }
+
+            $this->userManager->updateProfilePicturePath($user, $imagePath);
+
             Utils::redirect('profil');
-            
+
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            Utils::redirectWithMessage("profil", $e->getMessage());
         }
+    }
+
+    public function disconnectUser(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+
+        Utils::redirect('loginForm');
+        exit;
     }
 }

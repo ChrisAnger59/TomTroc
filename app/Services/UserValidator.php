@@ -31,8 +31,14 @@ class UserValidator
     {
         $this->errors = [];
 
-        if (empty($email) || empty($password)) {
-            $this->errors[] = "Champs requis";
+        if (empty($email)) {
+            $this->errors[] = "Email requis";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[] = "Email invalide";
+        }
+
+        if (empty($password)) {
+            $this->errors[] = "Mot de passe requis";
         }
 
         return empty($this->errors);

@@ -24,7 +24,7 @@ class Auth
     public static function isLogged(): bool
     {
         // Si $_SESSION['id'] n'est pas attribué, retourne false
-        return isset($_SESSION['id']);
+        return self::getLoggedUserId() !== null;
     }
 
 
@@ -40,7 +40,6 @@ class Auth
         if (!self::isLogged()) {
             $errorMessage = "Vous devez vous connecter";
             Utils::redirectToLogin($errorMessage);
-            exit();
         }
     }
 }
