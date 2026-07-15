@@ -35,7 +35,7 @@
 
 
     <article id="article-img">
-        <img src="./images/log-img.jpg">
+        <img src="./images/log-img.jpg" alt="Illustration bibliotheque">
     </article>
 
 </section>

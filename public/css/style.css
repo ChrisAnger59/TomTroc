@@ -126,6 +126,16 @@ input::placeholder {
     color: #292929;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
 /******** HEADER ********/
 
 #nav-header {
@@ -534,6 +544,11 @@ input::placeholder {
     padding: 1em;
 }
 
+#book-article #send-message-button {
+    width: 100%;
+    text-align: center;
+}
+
 
 /******** PAGE PROFIL ********/
 
@@ -913,7 +928,7 @@ input::placeholder {
     border-radius: 25px;
 }
 
-.conversation-card #conv-col {
+.conversation-card .conv-col {
     display: flex;
     flex-direction: column;
     width: 80%;
@@ -921,7 +936,7 @@ input::placeholder {
     gap: 5px;
 }
 
-.conversation-card #conv-row {
+.conversation-card .conv-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -973,7 +988,7 @@ input::placeholder {
     font-size: 12px;
 }
 
-.messages #subMessage img {
+.messages .subMessage img {
     width: 25px;
     height: 25px;
     object-fit: cover;
@@ -998,11 +1013,11 @@ input::placeholder {
     background: #FFFFFF;
 }
 
-.sent #subMessage {
+.sent .subMessage {
     text-align: end;
 }
 
-.received #subMessage {
+.received .subMessage {
     text-align: start;
     width: 100%;
     display: flex;
@@ -1011,7 +1026,7 @@ input::placeholder {
     align-items: center;
 }
 
-#subMessage p {
+.subMessage p {
     color: #A6A6A6;
     font-size: 12px;
 }

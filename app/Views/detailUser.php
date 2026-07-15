@@ -3,7 +3,7 @@
         <div id="info-resume" class="flex-col">
 
             <div class="flex-col">
-                <img id="public-pp" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>">
+                <img id="public-pp" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>" alt="Image de profile utilisateur">
             </div>
 
             <div class="border">
@@ -16,10 +16,10 @@
 
             <div class="flex-col">
                 <h3 class="mini-capital">BIBLIOTHEQUE</h3>
-                <p><img src="./images/book-logo.svg" alt="book-logo"><?= count($books) ?> livres</p>
+                <p><img src="./images/book-logo.svg" alt="nombre de livre"><?= count($books) ?> livres</p>
             </div>
 
-            <a href="index.php?action=messages&user=<?= $user->getId() ?>"><button class="btn btn-outline">Ecrire un message</button></a>
+            <a href="index.php?action=messages&user=<?= $user->getId() ?>" class="btn btn-outline">Ecrire un message</a>
 
         </div>
     </article>
@@ -39,7 +39,7 @@
                 <?php $index = 0; ?>
                 <?php foreach ($books as $book): ?>
                     <tr class="<?= ($index % 2 === 0) ? 'paire' : 'impaire' ?>">
-                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>"></td>
+                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="Couverture de livre"></td>
                         <td><?= htmlspecialchars($book->getTitle()) ?></td>
                         <td><?= htmlspecialchars($book->getAuthor()) ?></td>
                         <td class="description"><?= htmlspecialchars($book->getDescription(100)) ?></td>

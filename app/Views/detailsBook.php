@@ -7,7 +7,7 @@
 <section id="section-details" class="flex gap-2">
 
     <div id="book-cover">
-        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>">
+        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="Couverture du livre">
     </div>
 
     <article id="book-article" class="flex-col">
@@ -27,10 +27,10 @@
             <h2 class="mini-capital">PROPRIETAIRE</h2>
             <a href="index.php?action=detailsUser&id=<?= $book->getUserId() ?>">
             <div>
-                <img src="<?= htmlspecialchars($book->getUser()->getProfilePicturePath()) ?>"><p><?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
+                <img src="<?= htmlspecialchars($book->getUser()->getProfilePicturePath()) ?>" alt="Image de profile Utilisateur"><p><?= htmlspecialchars($book->getUser()->getNickname()) ?></p>
             </div>
             </a>
         </div>
-        <a href="index.php?action=messages&user=<?= $book->getUserId() ?>"><button class="btn btn-primary">Envoyer un message</button></a>
+        <a href="index.php?action=messages&user=<?= $book->getUserId() ?>" class="btn btn-primary" id="send-message-button">Envoyer un message</a>
     </article>
 </section>
