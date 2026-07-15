@@ -12,7 +12,7 @@
 
         <div id="profile-resume" class="flex-col">
             <div class="flex-col">
-                <img id="profile-picture" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>">
+                <img id="profile-picture" src="<?= htmlspecialchars($user->getProfilePicturePath()) ?>" alt="image profil utilisateur">
                 <form action="index.php?action=uploadProfilePicture" method="POST" enctype="multipart/form-data">
     
                     <label for="photo">Modifier</label>
@@ -39,14 +39,14 @@
 
                 <p>Vos informations personnelles</p>
 
-                <label>Adresse email</label>
-                <input type="text" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
+                <label for="email">Adresse email</label>
+                <input type="text" name="email" id="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
 
-                <label>Mot de passe</label>
-                <input type="password" name="password" placeholder="Laisser vide pour ne pas changer">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" placeholder="Laisser vide pour ne pas changer">
 
-                <label>Pseudo</label>
-                <input type="text" name="nickname" value="<?= htmlspecialchars($user->getNickname()) ?>">
+                <label for="nickname">Pseudo</label>
+                <input type="text" name="nickname" id="nickname" value="<?= htmlspecialchars($user->getNickname()) ?>">
 
                 <button class="btn btn-outline">Enregistrer</button>
             </form>
@@ -70,7 +70,7 @@
                 <?php $index = 0; ?>
                 <?php foreach ($books as $book): ?>
                     <tr class="<?= ($index % 2 === 0) ? 'paire' : 'impaire' ?>">
-                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>"></td>
+                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="Couverture livre"></td>
                         <td><?= htmlspecialchars($book->getTitle()) ?></td>
                         <td><?= htmlspecialchars($book->getAuthor()) ?></td>
                         <td class="description"><?= htmlspecialchars($book->getDescription(100)) ?></td>

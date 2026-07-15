@@ -4,6 +4,7 @@
         <h1>Nos livres à l'échange</h1>
 
         <form method="get" action="index.php">
+            <label for="search-input" class="visually-hidden">Rechercher un livre</label>
             <input type="hidden" name="action" value="allBooks">
             <button type="submit"><img src="./images/search-logo.png" alt="search-logo"></button>
             <input type="text" 

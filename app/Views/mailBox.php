@@ -22,9 +22,9 @@
 
                     <a href="index.php?action=messages&user=<?= $convUserId ?>">
                         <div class="conversation-card <?= $isActive ? 'active' : '' ?>">
-                            <img src="<?= $conversation->getOtherUser()->getProfilePicturePath() ?>">
-                            <div id="conv-col">
-                                <div id="conv-row">
+                            <img src="<?= $conversation->getOtherUser()->getProfilePicturePath() ?>" alt="Image de profil utilisateur">
+                            <div class="conv-col">
+                                <div class="conv-row">
                                     <p><?= htmlspecialchars($conversation->getOtherUser()->getNickname()) ?></p>
                                     <p><?= App\Services\Utils::convertDateFormatHour($conversation->getCreatedAt()) ?></p>
                                 </div>
@@ -41,7 +41,7 @@
 
             <?php if ($messages): ?>
             <div id="messages-header">
-                <img src="<?= $otherUser->getProfilePicturePath() ?>">
+                <img src="<?= $otherUser->getProfilePicturePath() ?>" alt="image de profil utilisateur">
                 <h2><?= $otherUser->getNickname() ?></h2>
             </div>
             <?php endif; ?>
@@ -52,9 +52,9 @@
                     <?php foreach ($messages as $message): ?>
 
                         <div class="<?= $message->getSenderId() === $userId ? 'sent' : 'received' ?>">
-                            <div id="subMessage">
+                            <div class="subMessage">
                                 <?php if ($message->getSenderId() === $otherUserId): ?>
-                                    <img src="<?= $otherUser->getProfilePicturePath() ?>">
+                                    <img src="<?= $otherUser->getProfilePicturePath() ?>" alt="image de profil utilisateur">
                                 <?php endif; ?>
                                 <p><?= App\Services\Utils::convertDateFormat($message->getCreatedAt()) ?></p>
                             </div>

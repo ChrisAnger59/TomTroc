@@ -111,6 +111,7 @@ class BookController
 
         try {
             $this->bookManager->deleteBook($book);
+            Utils::redirect("profil");
 
         } catch (\Exception $e) {
             Utils::redirectWithMessage("profil", $e->getMessage());
