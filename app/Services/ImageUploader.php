@@ -9,6 +9,7 @@ use Exception;
 class ImageUploader
 {
     private array $allowed = ['image/jpeg', 'image/png'];
+    private array $allowedFolders = ['users', 'books'];
     private int $maxSize = 5000000;
 
     public function upload(array $file, string $folder): string
@@ -17,10 +18,15 @@ class ImageUploader
             throw new Exception("Erreur d'upload");
         }
 
+        if (!in_array($folder, $this->allowedFolders)) {
+            throw new Exception("Dossier invalide");
+        }
+
         $tmp_name = $file['tmp_name'];
         $file_size = $file['size'];
 
-        $mime = mime_content_type($tmp_name);
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($tmp_name);
 
         if (!in_array($mime, $this->allowed)) {
             throw new Exception("Type de fichier invalide");
@@ -30,28 +36,23 @@ class ImageUploader
             throw new Exception("Fichier trop volumineux");
         }
 
-        switch ($mime) {
-            case 'image/jpeg':
-                $extension = '.jpg';
-                break;
-            case 'image/png':
-                $extension = '.png';
-                break;
-            case 'image/jpg':
-                $extension = '.jpg';
-                break;
-            default :
-                throw new \Exception("Type non supporté");
-        }
+        $extension = $mime === 'image/png' ? '.png' : '.jpg';
 
         $file_name = uniqid('', true) . $extension;
 
-        $path = "./../public/uploads/$folder/" . $file_name;
+        $directory = __DIR__ . "/../../public/uploads/$folder/";
 
-        if (!move_uploaded_file($tmp_name, $path)) {
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $fullPath = $directory . $file_name;
+
+        if (!move_uploaded_file($tmp_name, $fullPath)) {
             throw new Exception("Erreur lors du déplacement du fichier");
         }
 
-        return $path;
+        // ✅ chemin utilisable côté front
+        return "uploads/$folder/" . $file_name;
     }
 }

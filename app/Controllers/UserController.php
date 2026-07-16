@@ -11,6 +11,7 @@ use App\Repositories\BookManager;
 use App\Services\UserValidator;
 use App\Services\Auth;
 use App\Services\ImageUploader;
+use App\Models\User;
 
 class UserController
 {
@@ -211,7 +212,7 @@ class UserController
 
             $oldPath = $user->getProfilePicturePath();
 
-            if ($oldPath && file_exists($oldPath) && str_contains($oldPath, 'users')) {
+            if ($oldPath && file_exists($oldPath) && $oldPath !== User::DEFAULT_PPP) {
                 unlink($oldPath);
             }
 

@@ -11,13 +11,14 @@ class UserManager extends AbstractRepository
     public function addUser(string $nickname, string $email, string $password): void
     {
         try {
-            $sql = "INSERT INTO `users` (`nickname`, `email`, `password`)
-                    VALUES (:nickname, :email, :password)";
+            $sql = "INSERT INTO `users` (`nickname`, `email`, `password`, `profile_picture_path`)
+                    VALUES (:nickname, :email, :password, :profilePicture)";
 
             $this->db->query($sql, [
                 'nickname' => $nickname,
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'profilePicture' => User::DEFAULT_PPP
             ]);
 
         } catch (\PDOException $e) {
