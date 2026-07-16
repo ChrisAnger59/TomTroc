@@ -15,6 +15,7 @@ class User extends AbstractModel
     private string $createdAt = "";
     private ?string $updatedAt = "";
     private string $status = "";
+    public const DEFAULT_PPP = './../public/uploads/users/defaultPicture.png'; 
 
     public function setNickname(string $nickname): void
     {

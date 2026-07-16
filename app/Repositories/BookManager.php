@@ -42,7 +42,7 @@ class BookManager extends AbstractRepository
 
             $books = $this->hydrateBooksFromResult($result);
 
-            return $books[0] ?? null; // ✅ cas normal → pas d'exception
+            return $books[0] ?? null;
 
         } catch (\PDOException $e) {
             throw new \Exception("Erreur lors de la récupération du livre");
