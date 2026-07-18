@@ -751,6 +751,18 @@ input::placeholder {
     color: #292929;
 }
 
+#add-book-link {
+    width: 100%;
+    height: 4em;
+    align-content: center;
+    text-align: center;
+}
+
+#add-book-link a {
+    text-decoration: none;
+    padding: 10px;
+}
+
 
 /******** PAGE PROFIL PUBLIC ********/
 

@@ -53,7 +53,7 @@
         </div>
     </article>
 
-    <article id="owned-books" class="flex">
+    <article id="owned-books" class="flex-col">
         <table>
             <thead>
                 <tr>
@@ -87,5 +87,8 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <div id="add-book-link">
+            <a href="" class="btn btn-primary">Ajouter un livre</a>
+        </div>
     </article>
 </section>
