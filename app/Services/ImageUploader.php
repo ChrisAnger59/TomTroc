@@ -52,7 +52,6 @@ class ImageUploader
             throw new Exception("Erreur lors du déplacement du fichier");
         }
 
-        // ✅ chemin utilisable côté front
         return "uploads/$folder/" . $file_name;
     }
 }

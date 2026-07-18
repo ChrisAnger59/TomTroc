@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\View;
+use App\Models\Book;
 use App\Services\Utils;
 use App\Repositories\BookManager;
 use App\Services\Auth;
@@ -60,6 +61,49 @@ class BookController
 
         } catch (\Exception $e) {
             Utils::redirectWithMessage("home", $e->getMessage());
+        }
+    }
+
+    public function showAddBookForm()
+    {
+        Auth::requireLogin();
+
+        (new View())->render('addBook');
+    }
+
+    public function addBook()
+    {
+        Auth::requireLogin();
+
+        $userId = Auth::getLoggedUserId();
+        $title = Utils::request('newTitle');
+        $author = Utils::request('newAuthor');
+        $description = Utils::request('newDescription');
+        $availability = filter_var(Utils::request('availability'), FILTER_VALIDATE_INT);
+
+        $imagePath = Book::DEFAULT_CP;
+        $file = $_FILES['newBookPicture'] ?? null;
+        $imageUploader = new ImageUploader();
+
+        if ($file && $file['error'] === UPLOAD_ERR_OK) {
+            $imagePath = $imageUploader->upload($_FILES['newBookPicture'], 'books');
+        }
+
+
+        $validator = new BookValidator();
+
+        if (!$validator->validateUpdate($title, $author, $description, $availability)) {
+            Utils::redirectWithMessage("profil", implode(', ', $validator->getErrors()));
+            return;
+        }
+
+        try {
+            $bookManager = new BookManager();
+            $bookManager->addBook($userId, $title, $author, $description, $availability, $imagePath);
+            Utils::redirect("profil");
+
+        } catch (\Exception $e) {
+            Utils::redirectWithMessage("profil", $e->getMessage());
         }
     }
 
@@ -136,13 +180,13 @@ class BookController
 
             $oldPath = $book->getCoverPicturePath();
 
-            if ($oldPath && file_exists($oldPath) && str_contains($oldPath, 'books')) {
+            if ($oldPath && file_exists($oldPath) && $oldPath !== Book::DEFAULT_CP) {
                 unlink($oldPath);
             }
 
             $this->bookManager->updateCoverPicturePath($book, $imagePath);
 
-            Utils::redirect('updateBook', ['id' => $book->getId()]);
+            Utils::redirect('updateBook', ['id' => (string) $book->getId()]);
 
         } catch (\Exception $e) {
             Utils::redirectWithMessage("profil", $e->getMessage());

@@ -123,6 +123,25 @@ class BookManager extends AbstractRepository
         }
     }
 
+    public function addBook(int $idUser, string $title, string $author, string $description, int $availability, string $imagePath)
+    {
+        try {
+            $sql = "INSERT INTO `books` (`user_id`, `title`, `author`, `description`, `availability`, `cover_picture_path`)
+                VALUES (:idUser, :title, :author, :description, :availability, :imagePath);";
+            
+            $this->db->query($sql, [
+                'idUser' => $idUser,
+                'title' => $title,
+                'author' => $author,
+                'description' => $description,
+                'availability' => $availability,
+                'imagePath' => $imagePath
+            ]);
+        } catch (\PDOException $e) {
+            throw new \Exception("Impossible de créer le livre");
+        }
+    }
+
     public function deleteBook(Book $book): void
     {
         try {
