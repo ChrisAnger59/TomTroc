@@ -28,7 +28,7 @@
                 <input type="text" name="title" id="title" value="<?= htmlspecialchars($book->getTitle()) ?>">
 
                 <label for="author">Auteur</label>
-                <input type="text" name="author" id="title" value="<?= htmlspecialchars($book->getAuthor()) ?>">
+                <input type="text" name="author" id="author" value="<?= htmlspecialchars($book->getAuthor()) ?>">
 
                 <label for="description-input">Commentaire</label>
                 <textarea id="description-input" rows="20" name="description"><?= htmlspecialchars($book->getDescription()) ?></textarea>

@@ -15,6 +15,7 @@ class Book extends AbstractModel
     private ?string $updatedAt = "";
     private string $description = "";
     private ?User $user;
+    public const DEFAULT_CP = './../public/uploads/books/defaultCover.png';
 
 
     public function setTitle(string $title): void

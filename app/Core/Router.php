@@ -101,7 +101,7 @@ class Router
                 $userController->updatePersonalInfo();
                 break;
 
-            case'updateBook':
+            case 'updateBook':
                 $bookController = new BookController();
                 $bookController->editBookDetails();
                 break;
@@ -109,6 +109,16 @@ class Router
             case 'updateBookInfo':
                 $bookController = new BookController();
                 $bookController->updateBookInfo();
+                break;
+
+            case 'addBookForm':
+                $bookController = new BookController();
+                $bookController->ShowAddBookForm();
+                break;
+
+            case 'addBook':
+                $bookController = new BookController();
+                $bookController->addBook();
                 break;
 
             case 'deleteBook':

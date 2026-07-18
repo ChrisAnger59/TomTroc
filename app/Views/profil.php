@@ -88,7 +88,7 @@
             </tbody>
         </table>
         <div id="add-book-link">
-            <a href="" class="btn btn-primary">Ajouter un livre</a>
+            <a href="index.php?action=addBookForm" class="btn btn-primary">Ajouter un livre</a>
         </div>
     </article>
 </section>
