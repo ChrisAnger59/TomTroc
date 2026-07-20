@@ -62,7 +62,7 @@
                 <?php $index = 0; ?>
                 <?php foreach ($books as $book): ?>
                     <tr class="<?= ($index % 2 === 0) ? 'paire' : 'impaire' ?>">
-                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="Couverture livre"></td>
+                        <td class="c1"><img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="Couverture <?= htmlspecialchars($book->getTitle()) ?>"></td>
                         <td><?= htmlspecialchars($book->getTitle()) ?></td>
                         <td><?= htmlspecialchars($book->getAuthor()) ?></td>
                         <td class="description"><?= htmlspecialchars($book->getDescription(100)) ?></td>

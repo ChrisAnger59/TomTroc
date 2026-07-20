@@ -15,6 +15,7 @@ body {
     margin: auto;
     font-family: "Inter", sans-serif;
     color: #292929;
+    line-height: 1.5;
 }
 
 h1 {
@@ -45,7 +46,7 @@ input, #status, #availability {
 }
 
 input::placeholder {
-    color: #A6A6A6;
+    color: #9A9A9A;
     font-size: 14px;
     font-weight: 400;
 }
@@ -110,9 +111,9 @@ input::placeholder {
 }
 
 .btn-outline {
-    border: 1px solid #00AC66;
+    border: 1px solid #008A55;
     background-color: #F5F3EF;
-    color: #00AC66;
+    color: #008A55;
 }
 
 .btn-outline:hover {
@@ -197,6 +198,7 @@ input::placeholder {
 #nav-footer a {
     font-weight: 300;
     font-size: 12px;
+    color: #6F6F6F;
 }
 
 #logo-footer img {
@@ -227,7 +229,7 @@ input::placeholder {
 
 .legend {
     text-align: end;
-    color: #A6A6A6;
+    color: #8F8F8F;
     font-size: 12px;
     font-style: italic;
     padding: 10px;
@@ -272,12 +274,12 @@ input::placeholder {
 
 .book-author {
     font-size: 14px;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 .book-mention {
     font-size: 10px;
-    color: #A6A6A6;
+    color: #8F8F8F;
     font-style: italic;
     padding: 15px;
     margin-top: auto;
@@ -339,7 +341,7 @@ input::placeholder {
 .signature {
     font-size: 12px;
     font-style: italic;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 .corner-img {
@@ -352,7 +354,7 @@ input::placeholder {
 /******** PAGE DE LOG ********/
 #errorMessage {
     padding: 1em;
-    background-color: rgb(255, 0, 0);
+    background-color: #D32F2F;
     color: #FFFFFF;
     width: fit-content;
     position: absolute;
@@ -381,7 +383,7 @@ input::placeholder {
 }
 
 .article-log-form form label {
-    color: #A6A6A6;
+    color: #8F8F8F;
     font-size: 14px;
     font-weight: 400;
 }
@@ -480,7 +482,7 @@ input::placeholder {
 
 #book-article span {
     width: 27px;
-    border: 1px solid #A6A6A6;
+    border: 1px solid #8F8F8F;
 }
 
 #book-article {
@@ -500,7 +502,7 @@ input::placeholder {
 #title-author p {
     font-size: 16px;
     font-weight: 400;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #book-article button {
@@ -515,7 +517,7 @@ input::placeholder {
 #nav-pre-section, #nav-pre-section a {
     font-size: 10px;
     font-weight: 300;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #owner-div div {
@@ -579,7 +581,7 @@ input::placeholder {
 #personal-info form label {
     font-size: 14px;
     font-weight: 400;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #personal-info form p {
@@ -601,7 +603,7 @@ input::placeholder {
     cursor: pointer;
     padding: 0;
     font: inherit;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #profile-resume, #personal-info {
@@ -624,7 +626,7 @@ input::placeholder {
 
 #profile-resume form label {
     cursor: pointer;
-    color: #A6A6A6;
+    color: #8F8F8F;
     text-decoration: underline;
 }
 
@@ -664,7 +666,7 @@ input::placeholder {
 
 .since {
     font-size: 14px;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #owned-books {
@@ -827,7 +829,7 @@ input::placeholder {
 }
 
 #book-edit-form #backlink {
-    color: #A6A6A6;
+    color: #8F8F8F;
     font-size: 14px;
 }
 
@@ -884,7 +886,7 @@ input::placeholder {
 
 #book-edit-form label, #book-add-form label {
     font-size: 14px;
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 #book-edit-form form button, #book-add-form form button {
@@ -1058,7 +1060,7 @@ input::placeholder {
 }
 
 .subMessage p {
-    color: #A6A6A6;
+    color: #8F8F8F;
     font-size: 12px;
 }
 
@@ -1082,7 +1084,7 @@ input::placeholder {
 }
 
 .send-form textarea::placeholder {
-    color: #A6A6A6;
+    color: #8F8F8F;
 }
 
 
