@@ -1,11 +1,3 @@
-<?php 
-    $error = App\Services\Utils::getErrorMessage();
-?>
-
-<?php if($error): ?>
-            <p id="errorMessage"><?= $error ?></p>
-<?php endif; ?>
-
 <section id="section-introduction">
     <div class="intro-container">
         <div class="intro-text flex-col gap-1">

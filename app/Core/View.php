@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Repositories\MessageManager;
+use App\Services\Utils;
 
 class View
 {
@@ -36,6 +37,10 @@ class View
         $content = $this->_renderViewFromTemplate($viewPath, $params);
 
         $currentIdUser = $_SESSION['id'] ?? null;
+
+        $error = Utils::getErrorMessage();
+
+        $params['error'] = $error;
 
         $unreadCount = 0;
 

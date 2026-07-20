@@ -1,11 +1,3 @@
-<?php 
-    $error = App\Services\Utils::getErrorMessage();
-?>
-
-<?php if($error): ?>
-            <p id="errorMessage"><?= $error ?></p>
-<?php endif; ?>
-
 <section id="mail-box-section">
     <div class="messaging">
 
