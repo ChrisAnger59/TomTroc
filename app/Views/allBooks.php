@@ -19,7 +19,7 @@
         <?php foreach ($books as $book) { ?>
             <a href="index.php?action=detailsBook&id=<?= $book->getId() ?>">
                 <article class="card book-card flex-col">
-                        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="">
+                        <img src="<?= htmlspecialchars($book->getCoverPicturePath()) ?>" alt="<?= htmlspecialchars($book->getTitle()) ?>">
                         <div class="book-content">
                             <h2><?= htmlspecialchars($book->getTitle()) ?></h2>
                             <p class="book-author"><?= $book->getAuthor() ?></p>

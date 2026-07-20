@@ -8,14 +8,14 @@
             <form action="index.php?action=<?= $action ?>" method="POST">
 
                 <?php if ($signin): ?>
-                <label>Pseudo</label>
+                <label for="nickname">Pseudo</label>
                 <input type="text" id="nickname" name="nickname">
                 <?php endif; ?>
 
-                <label>Adresse email</label>
+                <label for="email">Adresse email</label>
                 <input type="text" id="email" name="email">
 
-                <label>Mot de passe</label>
+                <label for="password">Mot de passe</label>
                 <input type="text" id="password" name="password">
 
                 <button type="submit" class="btn btn-primary"><?= $buttonText ?></button>
