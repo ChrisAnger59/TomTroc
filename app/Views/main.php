@@ -36,6 +36,9 @@
     </header>
 
     <main>    
+        <?php if(!empty($error)): ?>
+            <p id="errorMessage"><?= $error ?></p>
+        <?php endif; ?>
         <?= $content /* Ici est affiché le contenu réel de la page. */ ?>
     </main>
     
